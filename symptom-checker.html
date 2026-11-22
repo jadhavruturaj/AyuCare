@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symptom Checker & Guidance Report — आयुCare (AyuCare)</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap"><img src="assets/ayucare-logo.png" alt="AyuCare Logo"></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Health Today, Better Tomorrow</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="symptom-checker.html" class="nav-link active">Symptom Checker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Symptom Checker Section -->
+  <main class="section" style="padding: 3rem 1.5rem 5rem;">
+    <div class="container" style="max-width: 860px;">
+      
+      <div class="section-header" style="margin-bottom: 2rem;">
+        <span class="section-subtitle">Clinical Guidance Engine</span>
+        <h1 class="section-title">Check Your Symptoms</h1>
+        <p class="section-desc">
+          Describe your symptoms to receive instant evidence-based guidance, safe mild home-care measures, and accurate specialist recommendations.
+        </p>
+      </div>
+
+      <!-- Emergency Hotline Reminder Strip -->
+      <div style="background: #FFF3E0; border: 1px solid #FFE0B2; border-radius: var(--radius-md); padding: 0.9rem 1.25rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem;">
+        <div style="display:flex; align-items:center; gap:0.6rem; font-size:0.85rem; color:#B78103;">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.1rem; color: #E65100;"></i>
+          <span>Experiencing acute chest pain, shortness of breath, or facial drooping?</span>
+        </div>
+        <a href="tel:112" class="btn btn-sm" style="background:#D32F2F; color:#FFF; font-size:0.8rem;">
+          <i class="fa-solid fa-phone"></i> Call Emergency (112 / 911)
+        </a>
+      </div>
+
+      <!-- Main Submission Form Card -->
+      <div class="form-card">
+        <form id="symptom-check-form">
+          
+          <!-- Category Quick Filter Chips -->
+          <div class="form-group">
+            <label class="form-label">Filter Symptoms by Category</label>
+            <div class="ayubot-chips" id="category-filter-chips" style="background:transparent; border:none; padding:0.2rem 0 0.8rem;">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+
+          <!-- Select Symptom -->
+          <div class="form-group">
+            <label class="form-label" for="symptom-select">Select Primary Symptom *</label>
+            <select id="symptom-select" class="form-control" required>
+              <option value="">Loading 50 curated symptoms...</option>
+            </select>
+            <span class="form-help">Select the main symptom you are experiencing from our 50 predefined clinical conditions.</span>
+          </div>
+
+          <!-- Duration & Severity Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="duration-input">Symptom Duration *</label>
+              <input type="text" id="duration-input" class="form-control" placeholder="e.g. 2 days, 1 week, few hours" required>
+              <span class="form-help">How long have you noticed this symptom?</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Symptom Severity Level *</label>
+              <div class="severity-selector">
+                <label class="severity-option">
+                  <input type="radio" name="severity" value="Mild" checked>
+                  <div class="severity-box mild">
+                    <i class="fa-regular fa-face-smile"></i>
+                    <span>Mild</span>
+                  </div>
+                </label>
+                <label class="severity-option">
+                  <input type="radio" name="severity" value="Moderate">
+                  <div class="severity-box moderate">
+                    <i class="fa-regular fa-face-meh"></i>
+                    <span>Moderate</span>
+                  </div>
+                </label>
+                <label class="severity-option">
+                  <input type="radio" name="severity" value="Severe">
+                  <div class="severity-box severe">
+                    <i class="fa-regular fa-face-frown"></i>
+                    <span>Severe</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label class="form-label" for="description-input">Describe How You Feel</label>
+            <textarea id="description-input" class="form-control" placeholder="Describe the pain type (throbbing, sharp, dull), exact location, timing, or activities that make it better or worse..."></textarea>
+          </div>
+
+          <!-- Additional Details -->
+          <div class="form-group">
+            <label class="form-label" for="additional-input">Additional Health Context (Optional)</label>
+            <input type="text" id="additional-input" class="form-control" placeholder="e.g. Existing diabetes, recent travel, high fever, allergies...">
+            <span class="form-help">Provide any known medical conditions or secondary sensations.</span>
+          </div>
+
+          <button type="submit" id="submit-symptom-btn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 1rem;">
+            <i class="fa-solid fa-notes-medical"></i>
+            <span>Submit Symptoms for Guidance</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Generated Report Container (Rendered dynamically) -->
+      <div id="symptom-report-container" style="display: none;"></div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+          <h3>आयु<span>Care</span></h3>
+        </div>
+        <p>Health Today, Better Tomorrow. Empowering people with responsible symptom guidance and medical specialist recommendations.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="specialists.html">Find a Specialist</a></li>
+          <li><a href="symptom-checker.html">Symptom Checker</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>User Portals</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Patient Login</a></li>
+          <li><a href="register.html">Patient Registration</a></li>
+          <li><a href="doctor-login.html">Doctor Portal Login</a></li>
+          <li><a href="doctor-register.html">Doctor Registration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Emergency Numbers</h4>
+        <div style="font-size: 0.88rem; color: #CFD8DC;">
+          <div>National Emergency: <strong style="color: #66BB6A;">112</strong></div>
+          <div>Medical Helpline: <strong style="color: #66BB6A;">108</strong></div>
+          <div>USA / International: <strong style="color: #66BB6A;">911</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). For educational demonstration only.</div>
+      <div>Designed with HTML5, CSS3, Three.js, Flask & MySQL.</div>
+    </div>
+  </footer>
+
+  <!-- Floating AyuBot Chatbot Component -->
+  <button class="ayubot-launcher" id="ayubot-launcher" aria-label="Open AyuBot Health Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="ayubot-badge">1</span>
+  </button>
+
+  <div class="ayubot-window" id="ayubot-window">
+    <div class="ayubot-header">
+      <div class="ayubot-header-info">
+        <div class="ayubot-avatar-wrap"><i class="fa-solid fa-robot"></i></div>
+        <div class="ayubot-title">
+          <h4>AyuBot</h4>
+          <span>Your Health Guide</span>
+        </div>
+      </div>
+      <div class="ayubot-actions">
+        <button class="ayubot-ctrl-btn" id="ayubot-min-btn"><i class="fa-solid fa-minus"></i></button>
+        <button class="ayubot-ctrl-btn" id="ayubot-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="ayubot-disclaimer">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Informational guide only. Not a medical substitute.</span>
+    </div>
+    <div class="ayubot-body" id="ayubot-messages">
+      <div class="chat-bubble bot">
+        Hello! Need help selecting symptoms or wondering which specialist to see? Ask me anything.
+      </div>
+      <div class="typing-indicator" id="ayubot-typing">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+    <div class="ayubot-chips" id="ayubot-chips-container"></div>
+    <div class="ayubot-footer">
+      <input type="text" class="ayubot-input" id="ayubot-input" placeholder="Ask AyuBot..." autocomplete="off">
+      <button class="ayubot-send-btn" id="ayubot-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/symptom-checker.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

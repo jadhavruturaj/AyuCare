@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact & Feedback — आयुCare (AyuCare)</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap"><img src="assets/ayucare-logo.png" alt="AyuCare Logo"></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Health Today, Better Tomorrow</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+        <li><a href="contact.html" class="nav-link active">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Contact & Feedback Content -->
+  <main class="section">
+    <div class="container" style="max-width: 960px;">
+      
+      <div class="section-header">
+        <span class="section-subtitle">Get in Touch</span>
+        <h1 class="section-title">Contact & Community Feedback</h1>
+        <p class="section-desc">
+          Have an inquiry, suggestion, or question regarding the AyuCare academic prototype? Reach out to our project team.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1.35fr; gap: 2.5rem; align-items: flex-start;">
+        
+        <!-- Info Column -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          
+          <div class="form-card" style="padding: 1.8rem;">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--light-blue); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1rem;">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--dark-blue); margin-bottom: 0.35rem;">Academic Project Inquiry</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
+              Department of Computer Engineering<br>
+              AyuCare Software Project Team
+            </p>
+            <div style="margin-top: 0.8rem; font-size: 0.85rem; color: var(--primary-blue); font-weight: 500;">
+              contact@ayucare.in
+            </div>
+          </div>
+
+          <div class="form-card" style="padding: 1.8rem;">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--light-green); color: var(--primary-green); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 1rem;">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: var(--dark-blue); margin-bottom: 0.35rem;">Medical Emergency Note</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+              Please note that this contact form is not monitored for real-time medical emergencies. For urgent health distress, immediately call <strong>112 / 108 / 911</strong> or visit the nearest emergency department.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Contact Form Card -->
+        <div class="form-card" style="box-shadow: var(--shadow-md);">
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="contact-name">Your Full Name *</label>
+                <input type="text" id="contact-name" class="form-control" placeholder="Aarav Mehta" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contact-email">Your Email Address *</label>
+                <input type="email" id="contact-email" class="form-control" placeholder="name@example.com" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="contact-type">Category</label>
+                <select id="contact-type" class="form-control">
+                  <option value="General Inquiry">General Inquiry</option>
+                  <option value="Platform Feedback">Platform Feedback</option>
+                  <option value="Symptom Checker Suggestion">Symptom Checker Suggestion</option>
+                  <option value="Doctor Registration Help">Doctor Registration Help</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contact-subject">Subject *</label>
+                <input type="text" id="contact-subject" class="form-control" placeholder="e.g. Feedback on symptom suggestions" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contact-message">Your Message / Feedback *</label>
+              <textarea id="contact-message" class="form-control" placeholder="Type your message, query, or suggestions here..." style="min-height: 120px;" required></textarea>
+            </div>
+
+            <button type="submit" id="contact-submit-btn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Send Message</span>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+          <h3>आयु<span>Care</span></h3>
+        </div>
+        <p>Health Today, Better Tomorrow. Empowering people with responsible symptom guidance and medical specialist recommendations.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="specialists.html">Find a Specialist</a></li>
+          <li><a href="symptom-checker.html">Symptom Checker</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Emergency Numbers</h4>
+        <div style="font-size: 0.88rem; color: #CFD8DC;">
+          <div>National Emergency: <strong style="color: #66BB6A;">112</strong></div>
+          <div>Medical Helpline: <strong style="color: #66BB6A;">108</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). For educational demonstration only.</div>
+    </div>
+  </footer>
+
+  <!-- Floating AyuBot Chatbot Component -->
+  <button class="ayubot-launcher" id="ayubot-launcher" aria-label="Open AyuBot Health Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="ayubot-badge">1</span>
+  </button>
+
+  <div class="ayubot-window" id="ayubot-window">
+    <div class="ayubot-header">
+      <div class="ayubot-header-info">
+        <div class="ayubot-avatar-wrap"><i class="fa-solid fa-robot"></i></div>
+        <div class="ayubot-title">
+          <h4>AyuBot</h4>
+          <span>Your Health Guide</span>
+        </div>
+      </div>
+      <div class="ayubot-actions">
+        <button class="ayubot-ctrl-btn" id="ayubot-min-btn"><i class="fa-solid fa-minus"></i></button>
+        <button class="ayubot-ctrl-btn" id="ayubot-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="ayubot-disclaimer">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Informational guide only. Not a medical substitute.</span>
+    </div>
+    <div class="ayubot-body" id="ayubot-messages">
+      <div class="chat-bubble bot">
+        Hello! You are on our Contact & Feedback page. Need help finding a page or sending feedback?
+      </div>
+      <div class="typing-indicator" id="ayubot-typing">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+    <div class="ayubot-chips" id="ayubot-chips-container"></div>
+    <div class="ayubot-footer">
+      <input type="text" class="ayubot-input" id="ayubot-input" placeholder="Ask AyuBot..." autocomplete="off">
+      <button class="ayubot-send-btn" id="ayubot-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("contact-form");
+      const submitBtn = document.getElementById("contact-submit-btn");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("contact-name").value.trim();
+        const email = document.getElementById("contact-email").value.trim();
+        const feedbackType = document.getElementById("contact-type").value;
+        const subject = document.getElementById("contact-subject").value.trim();
+        const message = document.getElementById("contact-message").value.trim();
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending Message...`;
+
+        try {
+          const res = await AyuAPI.submitContact({
+            name, email, feedback_type: feedbackType, subject, message
+          });
+
+          if (res.success) {
+            showToast("Thank you! Your message has been received.", "success");
+            form.reset();
+          } else {
+            showToast(res.message || "Failed to submit message.", "error");
+          }
+        } catch (err) {
+          showToast(err.message || "An error occurred while sending.", "error");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send Message`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -13,9 +13,15 @@ from routes.contact_routes import contact_bp
 from routes.profile_routes import profile_bp
 
 def create_app():
-    # Frontend directory path for static serving
-    frontend_dir = os.path.join(PROJECT_DIR, "frontend")
-    
+    # Potential directories for static frontend files
+    static_dirs = [
+        os.path.join(PROJECT_DIR, "public"),
+        os.path.join(PROJECT_DIR, "frontend"),
+        PROJECT_DIR
+    ]
+    # Pick primary static folder that contains index.html
+    frontend_dir = next((d for d in static_dirs if os.path.isdir(d) and os.path.exists(os.path.join(d, "index.html"))), static_dirs[1])
+
     app = Flask(__name__, static_folder=frontend_dir, static_url_path="")
     app.config.from_object(Config)
 
@@ -33,7 +39,10 @@ def create_app():
 
     # Initialize Database on launch
     with app.app_context():
-        init_db()
+        try:
+            init_db()
+        except Exception as db_init_err:
+            app.logger.error(f"Database initialization error: {db_init_err}")
 
     # Health Check Endpoint
     @app.route("/api/health", methods=["GET"])
@@ -47,27 +56,60 @@ def create_app():
             "disclaimer": "AyuCare is an educational guidance prototype, not a medical diagnosis system."
         }), 200
 
-    # Serve Frontend static pages for single-port convenience
+    # Serve Frontend static pages for single-port and serverless fallback
     @app.route("/", defaults={"path": "index.html"})
     @app.route("/<path:path>")
     def serve_frontend(path):
         if path.startswith("api/"):
             return jsonify({"success": False, "message": "API endpoint not found."}), 404
-        
-        file_path = os.path.join(frontend_dir, path)
-        if os.path.exists(file_path) and os.path.isfile(file_path):
-            return send_from_directory(frontend_dir, path)
-        elif os.path.exists(os.path.join(frontend_dir, f"{path}.html")):
-            return send_from_directory(frontend_dir, f"{path}.html")
-        else:
-            return send_from_directory(frontend_dir, "index.html")
+
+        # Search across static folders
+        for d in static_dirs:
+            if not os.path.isdir(d):
+                continue
+            # Direct file match
+            candidate = os.path.join(d, path)
+            if os.path.isfile(candidate):
+                return send_from_directory(d, path)
+            # Match with .html extension
+            html_candidate = os.path.join(d, f"{path}.html")
+            if os.path.isfile(html_candidate):
+                return send_from_directory(d, f"{path}.html")
+
+        # Fallback to index.html
+        for d in static_dirs:
+            if not os.path.isdir(d):
+                continue
+            idx = os.path.join(d, "index.html")
+            if os.path.isfile(idx):
+                return send_from_directory(d, "index.html")
+
+        return "आयुCare Platform - Frontend ready. Visit /api/health for API status.", 200
 
     # Global Error Handlers
     @app.errorhandler(404)
     def handle_not_found(e):
         if request.path.startswith("/api/"):
             return jsonify({"success": False, "message": "Resource not found"}), 404
-        return send_from_directory(frontend_dir, "index.html")
+        
+        # Check if clean URL corresponds to an existing .html page
+        clean_path = request.path.strip("/")
+        if clean_path:
+            for d in static_dirs:
+                if not os.path.isdir(d):
+                    continue
+                html_candidate = os.path.join(d, f"{clean_path}.html")
+                if os.path.isfile(html_candidate):
+                    return send_from_directory(d, f"{clean_path}.html")
+
+        # Fallback to index.html
+        for d in static_dirs:
+            if not os.path.isdir(d):
+                continue
+            idx = os.path.join(d, "index.html")
+            if os.path.isfile(idx):
+                return send_from_directory(d, "index.html")
+        return "Page not found", 404
 
     @app.errorhandler(500)
     def handle_server_error(e):

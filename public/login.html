@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Login — आयुCare (AyuCare)</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap"><img src="assets/ayucare-logo.png" alt="AyuCare Logo"></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Health Today, Better Tomorrow</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="register.html" class="btn btn-primary btn-sm">Register as Patient</a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Login Form Section -->
+  <main class="section" style="display:flex; align-items:center; justify-content:center; min-height:76vh;">
+    <div class="container" style="max-width: 480px; width: 100%;">
+      
+      <div class="form-card" style="box-shadow: var(--shadow-lg);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo" style="width: 72px; height: 72px; margin: 0 auto 1rem; border-radius: 12px;">
+          <h1 style="font-family: var(--font-heading); font-size: 1.7rem; color: var(--dark-blue); font-weight: 700;">Welcome Back</h1>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem;">Sign in to your patient account to access previous guidance and consultations.</p>
+        </div>
+
+        <form id="patient-login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-identifier">Email Address or Mobile Number</label>
+            <input type="text" id="login-identifier" class="form-control" placeholder="name@example.com or 9876543210" required>
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="form-label" for="login-password">Password</label>
+              <a href="#" id="forgot-password-link" style="font-size: 0.78rem; font-weight: 600; color: var(--primary-blue);">Forgot Password?</a>
+            </div>
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" id="login-submit-btn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.85rem;">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span>Sign In</span>
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); font-size: 0.88rem;">
+          <p style="color: var(--text-secondary);">
+            Don't have an account yet? 
+            <a href="register.html" style="font-weight: 600; color: var(--primary-blue);">Register here</a>
+          </p>
+          <div style="margin-top: 0.8rem;">
+            <a href="doctor-login.html" class="btn btn-outline-green btn-sm" style="width: 100%;">
+              <i class="fa-solid fa-user-doctor"></i> Doctor Portal Login
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal-overlay" id="forgot-password-modal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3>Reset Password</h3>
+        <button class="modal-close-btn" id="forgot-modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-content">
+        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Enter your registered email address to receive password reset instructions.
+        </p>
+        <form id="forgot-password-form">
+          <div class="form-group">
+            <label class="form-label" for="reset-email">Registered Email</label>
+            <input type="email" id="reset-email" class="form-control" placeholder="name@example.com" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width: 100%; margin-top: 0.5rem;">
+            <i class="fa-solid fa-paper-plane"></i> Send Reset Link
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+          <h3>आयु<span>Care</span></h3>
+        </div>
+        <p>Health Today, Better Tomorrow. Empowering people with responsible symptom guidance and medical specialist recommendations.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Portals</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Patient Login</a></li>
+          <li><a href="register.html">Patient Registration</a></li>
+          <li><a href="doctor-login.html">Doctor Portal Login</a></li>
+          <li><a href="doctor-register.html">Doctor Registration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Emergency Numbers</h4>
+        <div style="font-size: 0.88rem; color: #CFD8DC;">
+          <div>National Emergency: <strong style="color: #66BB6A;">112</strong></div>
+          <div>Medical Helpline: <strong style="color: #66BB6A;">108</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). For educational demonstration only.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // If already logged in, redirect to dashboard
+      if (AyuAPI.isAuthenticated() && AyuAPI.getRole() === "patient") {
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      const form = document.getElementById("patient-login-form");
+      const submitBtn = document.getElementById("login-submit-btn");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const identifier = document.getElementById("login-identifier").value.trim();
+        const password = document.getElementById("login-password").value;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Signing In...`;
+
+        try {
+          const res = await AyuAPI.loginPatient({ identifier, password });
+          if (res.success && res.token) {
+            AyuAPI.setToken(res.token);
+            AyuAPI.setUser(res.user);
+            showToast("Welcome back! Redirecting to dashboard...", "success");
+            setTimeout(() => {
+              window.location.href = "dashboard.html";
+            }, 800);
+          } else {
+            showToast(res.message || "Invalid credentials.", "error");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In`;
+          }
+        } catch (err) {
+          showToast(err.message || "Login failed. Please check credentials.", "error");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In`;
+        }
+      });
+
+      // Forgot Password Modal
+      const modal = document.getElementById("forgot-password-modal");
+      const link = document.getElementById("forgot-password-link");
+      const closeBtn = document.getElementById("forgot-modal-close");
+      const forgotForm = document.getElementById("forgot-password-form");
+
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        modal.classList.add("active");
+      });
+
+      closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.remove("active");
+      });
+
+      forgotForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("reset-email").value.trim();
+        try {
+          const res = await AyuAPI.forgotPassword({ email, role: "patient" });
+          showToast(res.message, "info");
+          modal.classList.remove("active");
+        } catch (err) {
+          showToast(err.message || "Failed to process request.", "error");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -14,19 +14,37 @@ load_dotenv(dotenv_path)
 
 class Config:
     """AyuCare Configuration Class"""
+    BASE_DIR = BASE_DIR
+    PROJECT_DIR = PROJECT_DIR
     SECRET_KEY = os.getenv("SECRET_KEY", "ayucare-secure-secret-key-engineering-2026")
     
+    # Environment detection
+    is_serverless = (
+        os.getenv("VERCEL") == "1"
+        or "VERCEL" in os.environ
+        or os.getenv("NOW_REGION") is not None
+        or os.getenv("AWS_LAMBDA_FUNCTION_NAME") is not None
+    )
+
     # Database Settings
-    DB_TYPE = os.getenv("DB_TYPE", "mysql")  # 'mysql' or 'sqlite'
+    _raw_db_type = os.getenv("DB_TYPE", "")
     DB_HOST = os.getenv("DB_HOST", "localhost")
     DB_PORT = int(os.getenv("DB_PORT", 3306))
     DB_USER = os.getenv("DB_USER", "root")
     DB_PASSWORD = os.getenv("DB_PASSWORD", "")
     DB_NAME = os.getenv("DB_NAME", "ayucare_db")
-    
-    # SQLite fallback database file (uses /tmp on serverless environments like Vercel)
-    is_serverless = os.getenv("VERCEL") == "1" or "VERCEL" in os.environ or os.getenv("NOW_REGION") is not None
-    default_sqlite = "/tmp/ayucare_fallback.db" if is_serverless else str(PROJECT_DIR / "database" / "ayucare_fallback.db")
+
+    # In serverless without a remote MySQL host, automatically default to SQLite
+    if not _raw_db_type:
+        if is_serverless and DB_HOST in ("localhost", "127.0.0.1", "::1"):
+            DB_TYPE = "sqlite"
+        else:
+            DB_TYPE = "mysql"
+    else:
+        DB_TYPE = _raw_db_type
+
+    # SQLite database file (writable /tmp on serverless environments like Vercel)
+    default_sqlite = "/tmp/ayucare.db" if is_serverless else str(PROJECT_DIR / "database" / "ayucare_fallback.db")
     SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", default_sqlite)
     
     # SQL Schema & Seed scripts

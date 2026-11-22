@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Registration — आयुCare (AyuCare)</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap"><img src="assets/ayucare-logo.png" alt="AyuCare Logo"></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Health Today, Better Tomorrow</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Patient Login</a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Registration Form Section -->
+  <main class="section" style="padding: 3rem 1.5rem;">
+    <div class="container" style="max-width: 600px; width: 100%;">
+      
+      <div class="form-card" style="box-shadow: var(--shadow-lg);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo" style="width: 68px; height: 68px; margin: 0 auto 0.8rem; border-radius: 12px;">
+          <h1 style="font-family: var(--font-heading); font-size: 1.75rem; color: var(--dark-blue); font-weight: 700;">Create Patient Account</h1>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.35rem;">Register to save symptom check reports, track health history, and request doctor consultations.</p>
+        </div>
+
+        <form id="patient-register-form">
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name *</label>
+            <input type="text" id="reg-name" class="form-control" placeholder="e.g. Aarav Mehta" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-email">Email Address *</label>
+              <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-mobile">Mobile Number *</label>
+              <input type="tel" id="reg-mobile" class="form-control" placeholder="9876543210" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-age">Age *</label>
+              <input type="number" id="reg-age" class="form-control" placeholder="25" min="1" max="120" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-gender">Gender (Optional)</label>
+              <select id="reg-gender" class="form-control">
+                <option value="Not Specified">Prefer not to say</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-Binary">Non-Binary / Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-password">Password *</label>
+              <input type="password" id="reg-password" class="form-control" placeholder="At least 6 characters" minlength="6" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-confirm-password">Confirm Password *</label>
+              <input type="password" id="reg-confirm-password" class="form-control" placeholder="Repeat password" minlength="6" required>
+            </div>
+          </div>
+
+          <div style="margin: 1rem 0; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.5;">
+            By registering, you agree to AyuCare's educational healthcare guidance scope. AyuCare does not replace emergency medical services or clinical diagnosis.
+          </div>
+
+          <button type="submit" id="reg-submit-btn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Register & Start Health Journey</span>
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.75rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); font-size: 0.88rem;">
+          <p style="color: var(--text-secondary);">
+            Already have an account? 
+            <a href="login.html" style="font-weight: 600; color: var(--primary-blue);">Log in here</a>
+          </p>
+          <div style="margin-top: 0.8rem;">
+            <a href="doctor-register.html" class="btn btn-outline-green btn-sm" style="width: 100%;">
+              <i class="fa-solid fa-user-doctor"></i> Register as a Medical Doctor
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+          <h3>आयु<span>Care</span></h3>
+        </div>
+        <p>Health Today, Better Tomorrow. Empowering people with responsible symptom guidance and medical specialist recommendations.</p>
+      </div>
+      <div class="footer-col">
+        <h4>User Portals</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Patient Login</a></li>
+          <li><a href="register.html">Patient Registration</a></li>
+          <li><a href="doctor-login.html">Doctor Portal Login</a></li>
+          <li><a href="doctor-register.html">Doctor Registration</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Emergency Numbers</h4>
+        <div style="font-size: 0.88rem; color: #CFD8DC;">
+          <div>National Emergency: <strong style="color: #66BB6A;">112</strong></div>
+          <div>Medical Helpline: <strong style="color: #66BB6A;">108</strong></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). For educational demonstration only.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("patient-register-form");
+      const submitBtn = document.getElementById("reg-submit-btn");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const fullName = document.getElementById("reg-name").value.trim();
+        const email = document.getElementById("reg-email").value.trim();
+        const mobile = document.getElementById("reg-mobile").value.trim();
+        const age = document.getElementById("reg-age").value;
+        const gender = document.getElementById("reg-gender").value;
+        const password = document.getElementById("reg-password").value;
+        const confirmPassword = document.getElementById("reg-confirm-password").value;
+
+        if (password !== confirmPassword) {
+          showToast("Passwords do not match. Please verify.", "warning");
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Registering Account...`;
+
+        try {
+          const res = await AyuAPI.registerPatient({
+            full_name: fullName,
+            email: email,
+            mobile: mobile,
+            age: age,
+            gender: gender,
+            password: password,
+            confirm_password: confirmPassword
+          });
+
+          if (res.success && res.token) {
+            AyuAPI.setToken(res.token);
+            AyuAPI.setUser(res.user);
+            showToast("Registration successful! Welcome to AyuCare.", "success");
+            setTimeout(() => {
+              window.location.href = "dashboard.html";
+            }, 800);
+          } else {
+            showToast(res.message || "Registration failed.", "error");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-user-plus"></i> Register & Start Health Journey`;
+          }
+        } catch (err) {
+          showToast(err.message || "Registration error occurred.", "error");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i class="fa-solid fa-user-plus"></i> Register & Start Health Journey`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

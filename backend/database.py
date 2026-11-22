@@ -2,7 +2,7 @@ import os
 import sqlite3
 import re
 import logging
-from config import Config
+from config import Config, PROJECT_DIR
 
 logger = logging.getLogger("ayucare.database")
 logging.basicConfig(level=logging.INFO)
@@ -11,11 +11,14 @@ logging.basicConfig(level=logging.INFO)
 ACTIVE_ENGINE = None
 
 def get_mysql_connection():
-    """Attempt to establish a MySQL connection using PyMySQL."""
+    """Attempt to establish a MySQL connection using PyMySQL with safety timeouts."""
+    conf = Config.get_mysql_config()
+    # On serverless without a remote MySQL host, skip immediately to prevent hanging
+    if Config.is_serverless and conf.get("host") in ("localhost", "127.0.0.1", "::1"):
+        return None
     try:
         import pymysql
         import pymysql.cursors
-        conf = Config.get_mysql_config()
         conn = pymysql.connect(
             host=conf["host"],
             port=conf["port"],
@@ -24,7 +27,8 @@ def get_mysql_connection():
             database=conf["database"],
             charset=conf["charset"],
             cursorclass=pymysql.cursors.DictCursor,
-            autocommit=True
+            autocommit=True,
+            connect_timeout=3
         )
         return conn
     except Exception as e:
@@ -33,8 +37,21 @@ def get_mysql_connection():
 
 def get_sqlite_connection():
     """Establish connection to local SQLite database with Row dict support."""
-    os.makedirs(os.path.dirname(Config.SQLITE_DB_PATH), exist_ok=True)
-    conn = sqlite3.connect(Config.SQLITE_DB_PATH, check_same_thread=False)
+    db_path = Config.SQLITE_DB_PATH
+    os.makedirs(os.path.dirname(os.path.abspath(db_path)), exist_ok=True)
+
+    # In serverless, pre-seed /tmp from bundled fallback database if available
+    if Config.is_serverless and not os.path.exists(db_path):
+        bundled_db = os.path.join(Config.PROJECT_DIR, "database", "ayucare_fallback.db")
+        if os.path.exists(bundled_db):
+            try:
+                import shutil
+                shutil.copyfile(bundled_db, db_path)
+                logger.info("Copied pre-seeded SQLite database to serverless writable storage.")
+            except Exception as copy_err:
+                logger.warning(f"Could not copy bundled DB: {copy_err}")
+
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     return conn
 

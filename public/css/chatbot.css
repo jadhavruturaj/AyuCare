@@ -1,0 +1,360 @@
+/* ========================================================
+   आयुCare (AyuCare) - Chatbot Stylesheet
+   AyuBot – Your Health Guide
+   ======================================================== */
+
+/* Floating Launcher Button */
+.ayubot-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-blue), var(--fresh-green));
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: 0 6px 24px rgba(21, 101, 192, 0.4);
+  z-index: 9999;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.ayubot-launcher:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(102, 187, 106, 0.55);
+}
+
+/* Glowing Pulse Rings */
+.ayubot-launcher::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(102, 187, 106, 0.6);
+  animation: bot-pulse 2.2s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes bot-pulse {
+  0% { transform: scale(0.95); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+.ayubot-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #D32F2F;
+  color: #FFF;
+  font-size: 0.68rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--white);
+}
+
+/* Chatbot Popup Window */
+.ayubot-window {
+  position: fixed;
+  bottom: 102px;
+  right: 28px;
+  width: 380px;
+  height: 540px;
+  max-height: calc(100vh - 130px);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 9998;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.95);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.ayubot-window.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Chat Header */
+.ayubot-header {
+  background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
+  color: var(--white);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ayubot-header-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ayubot-avatar-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  color: var(--fresh-green);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.ayubot-title h4 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.ayubot-title span {
+  font-size: 0.72rem;
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ayubot-title span::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fresh-green);
+  display: inline-block;
+}
+
+.ayubot-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ayubot-ctrl-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.ayubot-ctrl-btn:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Disclaimer Strip */
+.ayubot-disclaimer {
+  background: #FFF8E1;
+  color: #8D6E63;
+  font-size: 0.72rem;
+  padding: 0.4rem 0.9rem;
+  text-align: center;
+  border-bottom: 1px solid #FFE082;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.ayubot-disclaimer i {
+  color: #FFA000;
+}
+
+/* Messages Body */
+.ayubot-body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: #FAFDFE;
+}
+
+.chat-bubble {
+  max-width: 84%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  word-wrap: break-word;
+  animation: fadeIn 0.25s ease;
+}
+
+.chat-bubble.bot {
+  align-self: flex-start;
+  background: var(--white);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  border-bottom-left-radius: 2px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background: var(--primary-blue);
+  color: var(--white);
+  border-bottom-right-radius: 2px;
+}
+
+.chat-bubble.bot.emergency {
+  background: #FFEBEE;
+  border-color: #EF9A9A;
+  color: #B71C1C;
+}
+
+.chat-action-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--light-blue);
+  color: var(--primary-blue);
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.chat-action-link:hover {
+  background: var(--primary-blue);
+  color: var(--white);
+}
+
+/* Suggested Questions Chips */
+.ayubot-chips {
+  padding: 0.5rem 1rem 0.85rem;
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: #FAFDFE;
+  border-top: 1px solid var(--border-light);
+  scrollbar-width: thin;
+}
+
+.chip-btn {
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  color: var(--primary-blue);
+  cursor: pointer;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.chip-btn:hover {
+  background: var(--light-blue);
+  border-color: var(--primary-blue);
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: none;
+  align-self: flex-start;
+  background: var(--white);
+  border: 1px solid var(--border-light);
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-md);
+  border-bottom-left-radius: 2px;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  animation: typing-blink 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-blink {
+  0%, 80%, 100% { opacity: 0.2; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* Input Footer */
+.ayubot-footer {
+  padding: 0.75rem 1rem;
+  background: var(--white);
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ayubot-input {
+  flex: 1;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 0.6rem 1rem;
+  font-size: 0.88rem;
+  outline: none;
+  background: #F8FBFE;
+  transition: var(--transition);
+}
+
+.ayubot-input:focus {
+  border-color: var(--primary-blue);
+  background: var(--white);
+}
+
+.ayubot-send-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--primary-blue);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  transition: var(--transition);
+}
+
+.ayubot-send-btn:hover {
+  background: var(--primary-green);
+  transform: scale(1.05);
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .ayubot-window {
+    width: calc(100% - 32px);
+    right: 16px;
+    bottom: 88px;
+    height: 480px;
+  }
+}

@@ -1,13 +1,18 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "public/**,frontend/**,database/**"
+    },
+    "app.py": {
+      "includeFiles": "public/**,frontend/**,database/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/app.py"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/$1"
+      "destination": "/api/index.py"
     }
   ]
 }

@@ -10,8 +10,9 @@ if backend_dir not in sys.path:
 # Import create_app from backend.app
 from backend.app import create_app
 
-# Expose 'app' at top level for Vercel, WSGI, Gunicorn
+# Expose 'app' and 'application' at top level for Vercel, WSGI, Gunicorn
 app = create_app()
+application = app
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5001))

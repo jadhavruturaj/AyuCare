@@ -35,19 +35,51 @@ def get_mysql_connection():
         logger.warning(f"MySQL connection failed: {e}")
         return None
 
+def _find_bundled_db():
+    """Search for the pre-seeded SQLite database in all common package locations."""
+    candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "database", "ayucare_fallback.db"),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "ayucare_fallback.db"),
+        os.path.join(str(PROJECT_DIR), "database", "ayucare_fallback.db"),
+        os.path.join(str(PROJECT_DIR), "backend", "database", "ayucare_fallback.db"),
+        os.path.join(os.getcwd(), "database", "ayucare_fallback.db"),
+        os.path.join(os.getcwd(), "backend", "database", "ayucare_fallback.db"),
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database", "ayucare_fallback.db"),
+    ]
+    for c in candidates:
+        if os.path.isfile(c) and os.path.getsize(c) > 1000:
+            return c
+    return None
+
+def _find_seed_file():
+    """Search for the seed.sql script in all common package locations."""
+    candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "database", "seed.sql"),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "seed.sql"),
+        os.path.join(str(PROJECT_DIR), "database", "seed.sql"),
+        os.path.join(str(PROJECT_DIR), "backend", "database", "seed.sql"),
+        os.path.join(os.getcwd(), "database", "seed.sql"),
+        os.path.join(os.getcwd(), "backend", "database", "seed.sql"),
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "database", "seed.sql"),
+    ]
+    for c in candidates:
+        if os.path.isfile(c) and os.path.getsize(c) > 100:
+            return c
+    return None
+
 def get_sqlite_connection():
     """Establish connection to local SQLite database with Row dict support."""
     db_path = Config.SQLITE_DB_PATH
     os.makedirs(os.path.dirname(os.path.abspath(db_path)), exist_ok=True)
 
     # In serverless, pre-seed /tmp from bundled fallback database if available
-    if Config.is_serverless and not os.path.exists(db_path):
-        bundled_db = os.path.join(Config.PROJECT_DIR, "database", "ayucare_fallback.db")
-        if os.path.exists(bundled_db):
+    if Config.is_serverless and (not os.path.exists(db_path) or os.path.getsize(db_path) == 0):
+        bundled_db = _find_bundled_db()
+        if bundled_db:
             try:
                 import shutil
                 shutil.copyfile(bundled_db, db_path)
-                logger.info("Copied pre-seeded SQLite database to serverless writable storage.")
+                logger.info(f"Copied pre-seeded SQLite database from {bundled_db} to {db_path}.")
             except Exception as copy_err:
                 logger.warning(f"Could not copy bundled DB: {copy_err}")
 
@@ -326,9 +358,10 @@ def _init_sqlite(conn):
 
 def _seed_sqlite(conn):
     """Populates SQLite from seed.sql definitions."""
-    if os.path.exists(Config.SEED_PATH):
+    seed_path = _find_seed_file()
+    if seed_path and os.path.exists(seed_path):
         try:
-            with open(Config.SEED_PATH, "r", encoding="utf-8") as f:
+            with open(seed_path, "r", encoding="utf-8") as f:
                 content = f.read()
             
             cursor = conn.cursor()

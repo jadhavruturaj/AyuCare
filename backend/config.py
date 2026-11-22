@@ -24,8 +24,10 @@ class Config:
     DB_PASSWORD = os.getenv("DB_PASSWORD", "")
     DB_NAME = os.getenv("DB_NAME", "ayucare_db")
     
-    # SQLite fallback database file
-    SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", str(PROJECT_DIR / "database" / "ayucare_fallback.db"))
+    # SQLite fallback database file (uses /tmp on serverless environments like Vercel)
+    is_serverless = os.getenv("VERCEL") == "1" or "VERCEL" in os.environ or os.getenv("NOW_REGION") is not None
+    default_sqlite = "/tmp/ayucare_fallback.db" if is_serverless else str(PROJECT_DIR / "database" / "ayucare_fallback.db")
+    SQLITE_DB_PATH = os.getenv("SQLITE_DB_PATH", default_sqlite)
     
     # SQL Schema & Seed scripts
     SCHEMA_PATH = str(PROJECT_DIR / "database" / "schema.sql")

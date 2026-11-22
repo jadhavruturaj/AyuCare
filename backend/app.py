@@ -75,8 +75,10 @@ def create_app():
 
     return app
 
+# Expose app at module level for Vercel, WSGI, and production runners
+app = create_app()
+
 if __name__ == "__main__":
-    app = create_app()
     port = Config.PORT
     print(f"\n=======================================================")
     print(f"  आयुCare (AyuCare) Health Platform Server")

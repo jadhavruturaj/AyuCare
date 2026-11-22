@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, send_from_directory, request
+from flask import Flask, jsonify, send_from_directory, request, redirect
 from flask_cors import CORS
 
 from config import Config, PROJECT_DIR
@@ -62,6 +62,12 @@ def create_app():
             init_db()
         except Exception as db_init_err:
             app.logger.error(f"Database initialization error: {db_init_err}")
+
+    # About section removal redirect
+    @app.route("/about", methods=["GET"])
+    @app.route("/about.html", methods=["GET"])
+    def redirect_about():
+        return redirect("/index.html", code=301)
 
     # Health Check Endpoint
     @app.route("/api/health", methods=["GET"])

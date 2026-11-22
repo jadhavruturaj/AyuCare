@@ -136,3 +136,57 @@ def validate_mobile(mobile: str) -> bool:
     """Validates mobile number format (supports Indian and international digits)."""
     cleaned = re.sub(r'[\s\-\(\)\+]', '', mobile.strip())
     return len(cleaned) >= 10 and len(cleaned) <= 15 and cleaned.isdigit()
+
+def generate_otp_code() -> str:
+    """Generates a cryptographically random 6-digit numeric OTP."""
+    return f"{secrets.randbelow(900000) + 100000:06d}"
+
+def generate_verification_token(mobile: str, purpose: str) -> str:
+    """Generates a time-limited HMAC signed token proving mobile verification."""
+    exp = int(time.time()) + 900  # 15 minutes validity
+    payload = {
+        "mobile": mobile,
+        "purpose": purpose,
+        "exp": exp
+    }
+    payload_json = json.dumps(payload, separators=(',', ':'))
+    payload_b64 = base64.urlsafe_b64encode(payload_json.encode("utf-8")).decode("utf-8").rstrip("=")
+    sig = hmac.new(
+        Config.SECRET_KEY.encode("utf-8"),
+        f"mobile_verify:{payload_b64}".encode("utf-8"),
+        hashlib.sha256
+    ).hexdigest()
+    return f"{payload_b64}.{sig}"
+
+def verify_verification_token(token: str, expected_mobile: str, expected_purpose: str) -> bool:
+    """Verifies the HMAC signed verification token."""
+    if not token or "." not in token:
+        return False
+    try:
+        payload_b64, sig = token.split(".", 1)
+        expected_sig = hmac.new(
+            Config.SECRET_KEY.encode("utf-8"),
+            f"mobile_verify:{payload_b64}".encode("utf-8"),
+            hashlib.sha256
+        ).hexdigest()
+        if not hmac.compare_digest(sig, expected_sig):
+            return False
+
+        padding = 4 - (len(payload_b64) % 4)
+        if padding != 4:
+            payload_b64 += "=" * padding
+        payload = json.loads(base64.urlsafe_b64decode(payload_b64).decode("utf-8"))
+
+        if payload.get("exp", 0) < int(time.time()):
+            return False
+        if payload.get("mobile") != expected_mobile:
+            return False
+        if payload.get("purpose") != expected_purpose:
+            return False
+        return True
+    except Exception:
+        return False
+
+def generate_reset_token() -> str:
+    """Generates a secure, cryptographically random password reset token."""
+    return secrets.token_urlsafe(48)

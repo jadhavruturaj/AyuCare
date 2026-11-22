@@ -1,5 +1,6 @@
 import os
 import sys
+from flask import Flask
 
 # Ensure backend directory is accessible
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,7 +12,10 @@ if backend_dir not in sys.path:
 
 from backend.app import create_app
 
-# Expose app and application for WSGI / Vercel Python runtime
+# Literal Flask initialization so Vercel AST framework analyzer detects the entrypoint
+app = Flask(__name__)
+
+# Expose fully-configured app and application for WSGI / Vercel Python runtime
 app = create_app()
 application = app
 

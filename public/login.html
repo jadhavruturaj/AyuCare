@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Login — आयुCare (AyuCare)</title>
   <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <!-- Guest Guard -->
+  <script src="js/guest-guard.js"></script>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/chatbot.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -30,7 +32,6 @@
 
       <ul class="nav-menu">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="about.html" class="nav-link">About</a></li>
         <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
         <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
         <li><a href="contact.html" class="nav-link">Contact</a></li>
@@ -66,7 +67,7 @@
           <div class="form-group">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <label class="form-label" for="login-password">Password</label>
-              <a href="#" id="forgot-password-link" style="font-size: 0.78rem; font-weight: 600; color: var(--primary-blue);">Forgot Password?</a>
+              <a href="forgot-password.html" id="forgot-password-link" style="font-size: 0.78rem; font-weight: 600; color: var(--primary-blue);">Forgot Password?</a>
             </div>
             <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
           </div>
@@ -176,10 +177,16 @@
           if (res.success && res.token) {
             AyuAPI.setToken(res.token);
             AyuAPI.setUser(res.user);
-            showToast("Welcome back! Redirecting to dashboard...", "success");
+            showToast("Welcome back! Signing in...", "success");
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectTarget = urlParams.get("redirect");
             setTimeout(() => {
-              window.location.href = "dashboard.html";
-            }, 800);
+              if (redirectTarget) {
+                window.location.href = decodeURIComponent(redirectTarget);
+              } else {
+                window.location.href = "index.html";
+              }
+            }, 700);
           } else {
             showToast(res.message || "Invalid credentials.", "error");
             submitBtn.disabled = false;

@@ -125,6 +125,30 @@ CREATE TABLE IF NOT EXISTS `contact_messages` (
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- 10. Mobile OTP Verification Table
+CREATE TABLE IF NOT EXISTS `mobile_otps` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `mobile` VARCHAR(20) NOT NULL,
+    `otp_code` VARCHAR(10) NOT NULL,
+    `purpose` VARCHAR(30) DEFAULT 'registration',
+    `is_verified` BOOLEAN DEFAULT FALSE,
+    `attempts` INT DEFAULT 0,
+    `expires_at` TIMESTAMP NOT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 11. Password Resets Table
+CREATE TABLE IF NOT EXISTS `password_resets` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `user_id` INT NOT NULL,
+    `role` VARCHAR(20) NOT NULL,
+    `email` VARCHAR(120) NOT NULL,
+    `token` VARCHAR(128) NOT NULL UNIQUE,
+    `expires_at` TIMESTAMP NOT NULL,
+    `is_used` BOOLEAN DEFAULT FALSE,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Indexes for performance
 CREATE INDEX `idx_patient_email` ON `patients` (`email`);
 CREATE INDEX `idx_doctor_email` ON `doctors` (`email`);
@@ -132,3 +156,5 @@ CREATE INDEX `idx_symptom_name` ON `symptoms` (`name`);
 CREATE INDEX `idx_consultation_patient` ON `consultations` (`patient_id`);
 CREATE INDEX `idx_consultation_doctor` ON `consultations` (`doctor_id`);
 CREATE INDEX `idx_history_patient` ON `symptom_history` (`patient_id`);
+CREATE INDEX `idx_mobile_otps` ON `mobile_otps` (`mobile`, `purpose`);
+CREATE INDEX `idx_password_resets_token` ON `password_resets` (`token`);

@@ -1,16 +1,21 @@
 import os
 import sys
+from flask import Flask
 
-# Ensure backend directory is in sys.path
+# Setup paths so backend package and modules are cleanly discoverable
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 backend_dir = os.path.join(BASE_DIR, "backend")
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
-# Import create_app from backend.app
 from backend.app import create_app
 
-# Expose 'app' and 'application' at top level for Vercel, WSGI, Gunicorn
+# Literal Flask initialization so Vercel AST framework analyzer detects the entrypoint
+app = Flask(__name__)
+
+# Re-assign to the fully initialized application with blueprints, db, and routes
 app = create_app()
 application = app
 

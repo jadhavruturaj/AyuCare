@@ -53,6 +53,25 @@ class Config:
     
     # Security & Tokens
     TOKEN_EXPIRATION_HOURS = int(os.getenv("TOKEN_EXPIRATION_HOURS", 24))
+    OTP_EXPIRATION_MINUTES = int(os.getenv("OTP_EXPIRATION_MINUTES", 10))
+    PASSWORD_RESET_EXPIRATION_HOURS = int(os.getenv("PASSWORD_RESET_EXPIRATION_HOURS", 1))
+
+    # Email Delivery Settings (SMTP)
+    SMTP_HOST = os.getenv("SMTP_HOST", "")
+    SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
+    SMTP_USER = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+    SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL", os.getenv("SMTP_USER", "noreply@ayucare.health"))
+    SMTP_FROM_NAME = os.getenv("SMTP_FROM_NAME", "आयुCare (AyuCare)")
+    SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "True").lower() in ("true", "1", "yes")
+    FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL", "http://localhost:5001").rstrip("/")
+
+    # SMS Gateway Settings
+    SMS_GATEWAY = os.getenv("SMS_GATEWAY", "console").lower()  # 'twilio', 'fast2sms', or 'console'
+    TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID", "")
+    TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "")
+    TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER", "")
+    FAST2SMS_API_KEY = os.getenv("FAST2SMS_API_KEY", "")
     
     # CORS
     CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")

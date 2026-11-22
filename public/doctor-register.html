@@ -74,46 +74,15 @@
             <input type="text" id="doc-reg-name" class="form-control" placeholder="e.g. Dr. Kavita Deshmukh" required>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="doc-reg-email">Professional Email *</label>
-            <input type="email" id="doc-reg-email" class="form-control" placeholder="doctor@clinic.com" required>
-          </div>
-
-          <!-- Mobile Verification Group with OTP -->
-          <div class="form-group">
-            <label class="form-label" for="doc-reg-mobile">Contact Mobile (Required for OTP Verification) *</label>
-            <div style="display: flex; gap: 0.5rem;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="doc-reg-email">Professional Email *</label>
+              <input type="email" id="doc-reg-email" class="form-control" placeholder="doctor@clinic.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="doc-reg-mobile">Contact Mobile *</label>
               <input type="tel" id="doc-reg-mobile" class="form-control" placeholder="10-digit mobile number" maxlength="10" required>
-              <button type="button" id="doc-btn-send-otp" class="btn btn-outline-green btn-sm" style="white-space: nowrap; font-weight: 600; padding: 0.5rem 1rem;">
-                <i class="fa-solid fa-paper-plane"></i> Send OTP
-              </button>
             </div>
-            <div id="doc-mobile-verified-badge" style="display: none; margin-top: 0.4rem; color: var(--primary-green); font-size: 0.84rem; font-weight: 600;">
-              <i class="fa-solid fa-circle-check"></i> Contact mobile verified successfully
-            </div>
-          </div>
-
-          <!-- OTP Input & Verification Container -->
-          <div id="doc-otp-container" style="display: none; background: #EAF7EC; border: 1px solid #A5D6A7; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.86rem; font-weight: 700; color: var(--primary-green);">
-                <i class="fa-solid fa-shield-halved"></i> Mobile Verification OTP
-              </span>
-              <span id="doc-otp-timer" style="font-size: 0.78rem; font-weight: 600; color: #546E7A;">Valid for 10 min</span>
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-              Enter the 6-digit OTP dispatched to your mobile number:
-            </p>
-            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <input type="text" id="doc-otp-input" class="form-control" placeholder="6-digit OTP" maxlength="6" style="letter-spacing: 4px; font-weight: 700; text-align: center; font-size: 1.1rem; width: 140px; padding: 0.45rem;">
-              <button type="button" id="doc-btn-verify-otp" class="btn btn-secondary btn-sm" style="padding: 0.5rem 1rem;">
-                <i class="fa-solid fa-check"></i> Verify OTP
-              </button>
-              <button type="button" id="doc-btn-resend-otp" class="btn btn-outline-green btn-sm" style="padding: 0.5rem 0.8rem;" disabled>
-                Resend (<span id="doc-resend-countdown">60</span>s)
-              </button>
-            </div>
-            <div id="doc-otp-feedback" style="display: none; margin-top: 0.5rem; font-size: 0.8rem; font-weight: 500;"></div>
           </div>
 
           <div class="form-row">
@@ -230,142 +199,15 @@
   <script src="js/main.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      let verificationToken = null;
-      let resendTimer = null;
-      let resendSeconds = 60;
-
-      const mobileInput = document.getElementById("doc-reg-mobile");
-      const btnSendOtp = document.getElementById("doc-btn-send-otp");
-      const otpContainer = document.getElementById("doc-otp-container");
-      const otpCodeInput = document.getElementById("doc-otp-input");
-      const btnVerifyOtp = document.getElementById("doc-btn-verify-otp");
-      const btnResendOtp = document.getElementById("doc-btn-resend-otp");
-      const resendCountdown = document.getElementById("doc-resend-countdown");
-      const otpFeedback = document.getElementById("doc-otp-feedback");
-      const mobileVerifiedBadge = document.getElementById("doc-mobile-verified-badge");
       const form = document.getElementById("doctor-register-form");
       const submitBtn = document.getElementById("doc-reg-submit-btn");
-
-      function startResendCooldown() {
-        btnResendOtp.disabled = true;
-        resendSeconds = 60;
-        resendCountdown.textContent = resendSeconds;
-        clearInterval(resendTimer);
-        resendTimer = setInterval(() => {
-          resendSeconds--;
-          resendCountdown.textContent = resendSeconds;
-          if (resendSeconds <= 0) {
-            clearInterval(resendTimer);
-            btnResendOtp.disabled = false;
-            btnResendOtp.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Resend OTP`;
-          }
-        }, 1000);
-      }
-
-      async function triggerOtpSend() {
-        const mobile = mobileInput.value.trim();
-        if (!/^[6-9]\d{9}$/.test(mobile)) {
-          showToast("Please enter a valid 10-digit Indian mobile number.", "warning");
-          mobileInput.focus();
-          return;
-        }
-
-        btnSendOtp.disabled = true;
-        btnSendOtp.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
-
-        try {
-          const res = await AyuAPI.sendOtp({ mobile, purpose: "doctor_registration" });
-          if (res.success) {
-            showToast(res.message, "success");
-            otpContainer.style.display = "block";
-            startResendCooldown();
-            
-            if (res.otp_code) {
-              otpCodeInput.value = res.otp_code;
-              otpFeedback.style.display = "block";
-              otpFeedback.innerHTML = `
-                <div style="margin-top: 0.75rem; padding: 0.85rem 1rem; background: #FFF9C4; border: 1px solid #FFE082; border-radius: 8px;">
-                  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-                    <div style="font-size: 0.9rem; font-weight: 700; color: #E65100;">
-                      <i class="fa-solid fa-key"></i> Doctor Verification OTP: 
-                      <span style="font-size: 1.25rem; font-family: monospace; letter-spacing: 3px; color: #2E7D32; background: #FFF; padding: 2px 8px; border-radius: 4px; border: 1px solid #A5D6A7; font-weight: 800;">${res.otp_code}</span>
-                    </div>
-                    <span style="font-size: 0.75rem; background: #2E7D32; color: #FFF; padding: 2px 8px; border-radius: 99px; font-weight: 600;">Auto-filled</span>
-                  </div>
-                  <p style="font-size: 0.78rem; color: #5D4037; margin-top: 0.45rem; line-height: 1.45;">
-                    <strong>Notice:</strong> Physical SMS transmission requires a Twilio or Fast2SMS API key in environment settings. Your code has been auto-filled above—click <strong>Verify OTP</strong> to continue.
-                  </p>
-                </div>
-              `;
-            } else {
-              otpCodeInput.value = "";
-              otpCodeInput.focus();
-            }
-          } else {
-            showToast(res.message || "Failed to send OTP.", "error");
-          }
-        } catch (err) {
-          showToast(err.message || "Error sending OTP.", "error");
-        } finally {
-          btnSendOtp.disabled = false;
-          btnSendOtp.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send OTP`;
-        }
-      }
-
-      btnSendOtp.addEventListener("click", triggerOtpSend);
-      btnResendOtp.addEventListener("click", triggerOtpSend);
-
-      btnVerifyOtp.addEventListener("click", async () => {
-        const mobile = mobileInput.value.trim();
-        const otpCode = otpCodeInput.value.trim();
-
-        if (!/^\d{6}$/.test(otpCode)) {
-          showToast("Please enter the 6-digit OTP code.", "warning");
-          otpCodeInput.focus();
-          return;
-        }
-
-        btnVerifyOtp.disabled = true;
-        btnVerifyOtp.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying...`;
-
-        try {
-          const res = await AyuAPI.verifyOtp({ mobile, otp_code: otpCode });
-          if (res.success && res.verification_token) {
-            verificationToken = res.verification_token;
-            showToast("Mobile verified successfully!", "success");
-            
-            mobileInput.readOnly = true;
-            mobileInput.style.backgroundColor = "#F1F8E9";
-            btnSendOtp.style.display = "none";
-            otpContainer.style.display = "none";
-            mobileVerifiedBadge.style.display = "block";
-            clearInterval(resendTimer);
-          } else {
-            showToast(res.message || "Invalid or expired OTP.", "error");
-            otpFeedback.style.display = "block";
-            otpFeedback.style.color = "#C62828";
-            otpFeedback.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${res.message || "Verification failed."}`;
-          }
-        } catch (err) {
-          showToast(err.message || "Error verifying OTP.", "error");
-        } finally {
-          btnVerifyOtp.disabled = false;
-          btnVerifyOtp.innerHTML = `<i class="fa-solid fa-check"></i> Verify OTP`;
-        }
-      });
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (!verificationToken) {
-          showToast("Please verify your contact mobile with OTP before completing registration.", "warning");
-          triggerOtpSend();
-          return;
-        }
-
         const fullName = document.getElementById("doc-reg-name").value.trim();
         const email = document.getElementById("doc-reg-email").value.trim();
-        const mobile = mobileInput.value.trim();
+        const mobile = document.getElementById("doc-reg-mobile").value.trim();
         const specialization = document.getElementById("doc-reg-specialization").value;
         const regNumber = document.getElementById("doc-reg-number").value.trim();
         const experience = document.getElementById("doc-reg-exp").value;
@@ -373,6 +215,17 @@
         const bio = document.getElementById("doc-reg-bio").value.trim();
         const password = document.getElementById("doc-reg-password").value;
         const confirmPassword = document.getElementById("doc-reg-confirm-password").value;
+
+        if (!/^[6-9]\d{9}$/.test(mobile)) {
+          showToast("Please enter a valid 10-digit Indian contact mobile number.", "warning");
+          document.getElementById("doc-reg-mobile").focus();
+          return;
+        }
+
+        if (password.length < 6) {
+          showToast("Password must be at least 6 characters long.", "warning");
+          return;
+        }
 
         if (password !== confirmPassword) {
           showToast("Passwords do not match.", "warning");
@@ -393,8 +246,7 @@
             hospital_clinic: clinic,
             bio: bio,
             password: password,
-            confirm_password: confirmPassword,
-            verification_token: verificationToken
+            confirm_password: confirmPassword
           });
 
           if (res.success && res.token) {

@@ -49,7 +49,7 @@
 
   <!-- Patient Registration Section -->
   <main class="section" style="padding: 3rem 1.5rem;">
-    <div class="container" style="max-width: 620px; width: 100%;">
+    <div class="container" style="max-width: 600px; width: 100%;">
       
       <div class="form-card" style="box-shadow: var(--shadow-lg);">
         <div style="text-align: center; margin-bottom: 2rem;">
@@ -64,46 +64,15 @@
             <input type="text" id="reg-name" class="form-control" placeholder="e.g. Aarav Mehta" required>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="reg-email">Email Address *</label>
-            <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
-          </div>
-
-          <!-- Mobile Verification Group with OTP -->
-          <div class="form-group">
-            <label class="form-label" for="reg-mobile">Mobile Number (Required for OTP Verification) *</label>
-            <div style="display: flex; gap: 0.5rem;">
-              <input type="tel" id="reg-mobile" class="form-control" placeholder="10-digit mobile number (e.g. 9876543210)" maxlength="10" required>
-              <button type="button" id="btn-send-otp" class="btn btn-outline btn-sm" style="white-space: nowrap; font-weight: 600; padding: 0.5rem 1rem;">
-                <i class="fa-solid fa-paper-plane"></i> Send OTP
-              </button>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-email">Email Address *</label>
+              <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required>
             </div>
-            <div id="mobile-verified-badge" style="display: none; margin-top: 0.4rem; color: var(--primary-green); font-size: 0.84rem; font-weight: 600;">
-              <i class="fa-solid fa-circle-check"></i> Mobile number verified successfully
+            <div class="form-group">
+              <label class="form-label" for="reg-mobile">Mobile Number *</label>
+              <input type="tel" id="reg-mobile" class="form-control" placeholder="10-digit mobile number" maxlength="10" required>
             </div>
-          </div>
-
-          <!-- OTP Input & Verification Container -->
-          <div id="otp-verification-container" style="display: none; background: #EAF5FF; border: 1px solid #BBDEFB; border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-              <span style="font-size: 0.86rem; font-weight: 700; color: var(--primary-blue);">
-                <i class="fa-solid fa-shield-halved"></i> Mobile Verification OTP
-              </span>
-              <span id="otp-timer" style="font-size: 0.78rem; font-weight: 600; color: #546E7A;">Valid for 10 min</span>
-            </div>
-            <p id="otp-sent-hint" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-              A 6-digit OTP has been dispatched to your mobile. Enter it below to complete verification:
-            </p>
-            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <input type="text" id="otp-code-input" class="form-control" placeholder="6-digit OTP" maxlength="6" style="letter-spacing: 4px; font-weight: 700; text-align: center; font-size: 1.1rem; width: 140px; padding: 0.45rem;">
-              <button type="button" id="btn-verify-otp" class="btn btn-primary btn-sm" style="padding: 0.5rem 1rem;">
-                <i class="fa-solid fa-check"></i> Verify OTP
-              </button>
-              <button type="button" id="btn-resend-otp" class="btn btn-outline btn-sm" style="padding: 0.5rem 0.8rem;" disabled>
-                Resend (<span id="resend-countdown">60</span>s)
-              </button>
-            </div>
-            <div id="otp-feedback" style="display: none; margin-top: 0.5rem; font-size: 0.8rem; font-weight: 500;"></div>
           </div>
 
           <div class="form-row">
@@ -205,148 +174,30 @@
   <script src="js/main.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      let verificationToken = null;
-      let resendTimer = null;
-      let resendSeconds = 60;
-
-      const mobileInput = document.getElementById("reg-mobile");
-      const btnSendOtp = document.getElementById("btn-send-otp");
-      const otpContainer = document.getElementById("otp-verification-container");
-      const otpCodeInput = document.getElementById("otp-code-input");
-      const btnVerifyOtp = document.getElementById("btn-verify-otp");
-      const btnResendOtp = document.getElementById("btn-resend-otp");
-      const resendCountdown = document.getElementById("resend-countdown");
-      const otpFeedback = document.getElementById("otp-feedback");
-      const mobileVerifiedBadge = document.getElementById("mobile-verified-badge");
       const form = document.getElementById("patient-register-form");
       const submitBtn = document.getElementById("reg-submit-btn");
 
-      function startResendCooldown() {
-        btnResendOtp.disabled = true;
-        resendSeconds = 60;
-        resendCountdown.textContent = resendSeconds;
-        clearInterval(resendTimer);
-        resendTimer = setInterval(() => {
-          resendSeconds--;
-          resendCountdown.textContent = resendSeconds;
-          if (resendSeconds <= 0) {
-            clearInterval(resendTimer);
-            btnResendOtp.disabled = false;
-            btnResendOtp.innerHTML = `<i class="fa-solid fa-rotate-right"></i> Resend OTP`;
-          }
-        }, 1000);
-      }
-
-      async function triggerOtpSend() {
-        const mobile = mobileInput.value.trim();
-        if (!/^[6-9]\d{9}$/.test(mobile)) {
-          showToast("Please enter a valid 10-digit Indian mobile number (e.g. 9876543210).", "warning");
-          mobileInput.focus();
-          return;
-        }
-
-        btnSendOtp.disabled = true;
-        btnSendOtp.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending...`;
-
-        try {
-          const res = await AyuAPI.sendOtp({ mobile, purpose: "patient_registration" });
-          if (res.success) {
-            showToast(res.message, "success");
-            otpContainer.style.display = "block";
-            startResendCooldown();
-            
-            if (res.otp_code) {
-              otpCodeInput.value = res.otp_code;
-              otpFeedback.style.display = "block";
-              otpFeedback.innerHTML = `
-                <div style="margin-top: 0.75rem; padding: 0.85rem 1rem; background: #FFF9C4; border: 1px solid #FFE082; border-radius: 8px;">
-                  <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
-                    <div style="font-size: 0.9rem; font-weight: 700; color: #E65100;">
-                      <i class="fa-solid fa-key"></i> Your Verification OTP: 
-                      <span style="font-size: 1.25rem; font-family: monospace; letter-spacing: 3px; color: #0D47A1; background: #FFF; padding: 2px 8px; border-radius: 4px; border: 1px solid #90CAF9; font-weight: 800;">${res.otp_code}</span>
-                    </div>
-                    <span style="font-size: 0.75rem; background: #2E7D32; color: #FFF; padding: 2px 8px; border-radius: 99px; font-weight: 600;">Auto-filled</span>
-                  </div>
-                  <p style="font-size: 0.78rem; color: #5D4037; margin-top: 0.45rem; line-height: 1.45;">
-                    <strong>Notice:</strong> Carrier SMS delivery requires an external SMS gateway (Twilio / Fast2SMS) configured in environment settings. Your code has been auto-filled above—click <strong>Verify OTP</strong> to continue.
-                  </p>
-                </div>
-              `;
-            } else {
-              otpCodeInput.value = "";
-              otpCodeInput.focus();
-            }
-          } else {
-            showToast(res.message || "Failed to send OTP.", "error");
-          }
-        } catch (err) {
-          showToast(err.message || "Error sending OTP.", "error");
-        } finally {
-          btnSendOtp.disabled = false;
-          btnSendOtp.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Send OTP`;
-        }
-      }
-
-      btnSendOtp.addEventListener("click", triggerOtpSend);
-      btnResendOtp.addEventListener("click", triggerOtpSend);
-
-      btnVerifyOtp.addEventListener("click", async () => {
-        const mobile = mobileInput.value.trim();
-        const otpCode = otpCodeInput.value.trim();
-
-        if (!/^\d{6}$/.test(otpCode)) {
-          showToast("Please enter the 6-digit OTP code.", "warning");
-          otpCodeInput.focus();
-          return;
-        }
-
-        btnVerifyOtp.disabled = true;
-        btnVerifyOtp.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Verifying...`;
-
-        try {
-          const res = await AyuAPI.verifyOtp({ mobile, otp_code: otpCode });
-          if (res.success && res.verification_token) {
-            verificationToken = res.verification_token;
-            showToast("Mobile verified successfully!", "success");
-            
-            // Mark mobile field verified and readOnly
-            mobileInput.readOnly = true;
-            mobileInput.style.backgroundColor = "#F1F8E9";
-            btnSendOtp.style.display = "none";
-            otpContainer.style.display = "none";
-            mobileVerifiedBadge.style.display = "block";
-            clearInterval(resendTimer);
-          } else {
-            showToast(res.message || "Invalid or expired OTP.", "error");
-            otpFeedback.style.display = "block";
-            otpFeedback.style.color = "#C62828";
-            otpFeedback.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${res.message || "Verification failed."}`;
-          }
-        } catch (err) {
-          showToast(err.message || "Error verifying OTP.", "error");
-        } finally {
-          btnVerifyOtp.disabled = false;
-          btnVerifyOtp.innerHTML = `<i class="fa-solid fa-check"></i> Verify OTP`;
-        }
-      });
-
-      // Form Submission
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (!verificationToken) {
-          showToast("Please verify your mobile number with OTP before completing registration.", "warning");
-          triggerOtpSend();
-          return;
-        }
-
         const fullName = document.getElementById("reg-name").value.trim();
         const email = document.getElementById("reg-email").value.trim();
-        const mobile = mobileInput.value.trim();
+        const mobile = document.getElementById("reg-mobile").value.trim();
         const age = document.getElementById("reg-age").value;
         const gender = document.getElementById("reg-gender").value;
         const password = document.getElementById("reg-password").value;
         const confirmPassword = document.getElementById("reg-confirm-password").value;
+
+        if (!/^[6-9]\d{9}$/.test(mobile)) {
+          showToast("Please enter a valid 10-digit Indian mobile number.", "warning");
+          document.getElementById("reg-mobile").focus();
+          return;
+        }
+
+        if (password.length < 6) {
+          showToast("Password must be at least 6 characters long.", "warning");
+          return;
+        }
 
         if (password !== confirmPassword) {
           showToast("Passwords do not match. Please verify.", "warning");
@@ -364,8 +215,7 @@
             age: age,
             gender: gender,
             password: password,
-            confirm_password: confirmPassword,
-            verification_token: verificationToken
+            confirm_password: confirmPassword
           });
 
           if (res.success && res.token) {

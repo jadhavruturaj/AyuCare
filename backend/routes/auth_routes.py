@@ -231,20 +231,6 @@ def register_patient():
     if password != confirm_password:
         return jsonify({"success": False, "message": "Passwords do not match."}), 400
 
-    # Mandatory Mobile OTP Verification Check
-    is_token_valid = verify_verification_token(verification_token, mobile, "registration")
-    if not is_token_valid:
-        # Fallback check database if token was somehow dropped
-        db_verified = fetch_one(
-            "SELECT id FROM mobile_otps WHERE mobile = %s AND purpose = 'registration' AND is_verified = 1 ORDER BY id DESC LIMIT 1",
-            (mobile,)
-        )
-        if not db_verified:
-            return jsonify({
-                "success": False,
-                "message": "Mobile number verification is mandatory. Please verify your mobile number with OTP before completing registration."
-            }), 400
-
     # Check for existing email or mobile
     existing_patient = fetch_one("SELECT id FROM patients WHERE email = %s OR mobile = %s", (email, mobile))
     if existing_patient:
@@ -257,8 +243,6 @@ def register_patient():
     """
     try:
         patient_id = execute_query(insert_sql, (full_name, email, mobile, age_int, gender, pwd_hash))
-        # Consume the verified OTP
-        execute_query("UPDATE mobile_otps SET is_verified = 2 WHERE mobile = %s", (mobile,))
         token = generate_token(patient_id, "patient", email, full_name)
         return jsonify({
             "success": True,
@@ -309,19 +293,6 @@ def register_doctor():
     if password != confirm_password:
         return jsonify({"success": False, "message": "Passwords do not match."}), 400
 
-    # Mandatory Mobile OTP Verification Check
-    is_token_valid = verify_verification_token(verification_token, mobile, "registration")
-    if not is_token_valid:
-        db_verified = fetch_one(
-            "SELECT id FROM mobile_otps WHERE mobile = %s AND purpose = 'registration' AND is_verified = 1 ORDER BY id DESC LIMIT 1",
-            (mobile,)
-        )
-        if not db_verified:
-            return jsonify({
-                "success": False,
-                "message": "Mobile number verification is mandatory. Please verify your mobile number with OTP before completing doctor registration."
-            }), 400
-
     existing_doc = fetch_one(
         "SELECT id FROM doctors WHERE email = %s OR mobile = %s OR registration_number = %s",
         (email, mobile, registration_number)
@@ -339,8 +310,6 @@ def register_doctor():
             full_name, email, mobile, specialization, registration_number,
             pwd_hash, bio, int(experience_years or 0), hospital_clinic
         ))
-        # Consume verified OTP
-        execute_query("UPDATE mobile_otps SET is_verified = 2 WHERE mobile = %s", (mobile,))
         token = generate_token(doc_id, "doctor", email, full_name)
         return jsonify({
             "success": True,

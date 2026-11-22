@@ -13,14 +13,22 @@ from routes.contact_routes import contact_bp
 from routes.profile_routes import profile_bp
 
 def create_app():
-    # Potential directories for static frontend files
-    static_dirs = [
-        os.path.join(PROJECT_DIR, "public"),
-        os.path.join(PROJECT_DIR, "frontend"),
-        PROJECT_DIR
+    # Build list of static directories covering local, Docker, and Vercel Lambda contexts
+    from pathlib import Path
+    base_candidates = [
+        Path(os.getcwd()),
+        Path(PROJECT_DIR),
+        Path(os.path.dirname(os.path.abspath(__file__))).parent,
+        Path(os.path.dirname(os.path.abspath(__file__)))
     ]
-    # Pick primary static folder that contains index.html
-    frontend_dir = next((d for d in static_dirs if os.path.isdir(d) and os.path.exists(os.path.join(d, "index.html"))), static_dirs[1])
+    static_dirs = []
+    for b in base_candidates:
+        for sub in ["public", "frontend", ""]:
+            d = b / sub if sub else b
+            if d.is_dir() and str(d) not in static_dirs:
+                static_dirs.append(str(d))
+
+    frontend_dir = next((d for d in static_dirs if os.path.exists(os.path.join(d, "index.html"))), static_dirs[0] if static_dirs else str(PROJECT_DIR))
 
     app = Flask(__name__, static_folder=frontend_dir, static_url_path="")
     app.config.from_object(Config)

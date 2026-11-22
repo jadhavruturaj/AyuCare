@@ -1,0 +1,33 @@
+# Python & Virtual Environments
+venv/
+**/venv/
+env/
+**/env/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environment files
+.env
+.env.local
+
+# Database files
+database/*.db
+database/*.sqlite3
+*.db
+*.sqlite3
+
+# macOS System Files
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor Settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

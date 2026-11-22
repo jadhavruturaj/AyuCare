@@ -64,6 +64,19 @@ def create_app():
             "disclaimer": "AyuCare is an educational guidance prototype, not a medical diagnosis system."
         }), 200
 
+    @app.route("/api/debug-files", methods=["GET"])
+    def debug_files():
+        import glob
+        return jsonify({
+            "cwd": os.getcwd(),
+            "cwd_files": os.listdir(os.getcwd()) if os.path.exists(os.getcwd()) else [],
+            "project_dir": str(PROJECT_DIR),
+            "project_dir_files": os.listdir(str(PROJECT_DIR)) if os.path.exists(str(PROJECT_DIR)) else [],
+            "static_dirs": static_dirs,
+            "all_html": glob.glob("**/*.html", recursive=True),
+            "app_file": os.path.abspath(__file__)
+        }), 200
+
     # Serve Frontend static pages for single-port and serverless fallback
     @app.route("/", defaults={"path": "index.html"})
     @app.route("/<path:path>")

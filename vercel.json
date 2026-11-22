@@ -1,34 +1,8 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "functions": {
-    "api/index.py": {
-      "includeFiles": [
-        "public/**",
-        "frontend/**",
-        "database/**",
-        "*.html",
-        "css/**",
-        "js/**",
-        "assets/**"
-      ]
-    },
-    "app.py": {
-      "includeFiles": [
-        "public/**",
-        "frontend/**",
-        "database/**",
-        "*.html",
-        "css/**",
-        "js/**",
-        "assets/**"
-      ]
-    }
-  },
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/index.py"
+      "source": "/(.*)",
+      "destination": "/app.py"
     }
   ]
 }

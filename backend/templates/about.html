@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About AyuCare — Problem Identification, Aim, Objectives & Architecture</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap">
+      <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+    </div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Health Today, Better Tomorrow</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link active">About</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="section">
+    <div class="container" style="max-width: 960px;">
+      
+      <!-- Page Title -->
+      <div class="section-header" style="text-align: left; margin-bottom: 2.5rem;">
+        <span class="section-subtitle">Academic Project Overview</span>
+        <h1 class="section-title">About आयुCare (AyuCare)</h1>
+        <p class="section-desc">Smart Symptom Guidance & Specialist Recommendation Platform designed as an educational healthcare software engineering prototype.</p>
+      </div>
+
+      <!-- About Grid / Cards -->
+      <div style="display: flex; flex-direction: column; gap: 2rem;">
+
+        <!-- 1. Problem Identification -->
+        <div class="form-card">
+          <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+            <div class="process-icon" style="margin-bottom:0; width:46px; height:46px; font-size:1.2rem;">
+              <i class="fa-solid fa-magnifying-glass-triangle"></i>
+            </div>
+            <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--dark-blue);">1. Problem Identification</h2>
+          </div>
+          <p style="color: var(--text-secondary); line-height: 1.7;">
+            When individuals encounter unfamiliar or uncomfortable health symptoms, their first instinct is often to turn to public search engines. Unfortunately, generic search results frequently lead to information overload, catastrophic self-diagnoses (often known as <em>cyberchondria</em>), and acute anxiety. 
+          </p>
+          <p style="color: var(--text-secondary); line-height: 1.7; margin-top: 0.8rem;">
+            Furthermore, patients are often uncertain about which medical specialist they should consult—for instance, visiting an incorrect department for neurological migraines vs. tension headaches, or orthopedic vs. general rheumatology concerns. This causes delayed medical attention, wasted consultation costs, and inappropriate healthcare decisions.
+          </p>
+        </div>
+
+        <!-- 2. Project Aim & Motivation -->
+        <div class="form-card">
+          <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+            <div class="process-icon" style="margin-bottom:0; width:46px; height:46px; font-size:1.2rem; background: var(--light-green); color: var(--primary-green);">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--dark-blue);">2. Project Aim & Motivation</h2>
+          </div>
+          <p style="color: var(--text-secondary); line-height: 1.7;">
+            <strong>Aim:</strong> To engineer a reliable, responsive, and secure full-stack web platform that delivers preliminary, rule-based healthcare guidance, safe supportive home-care suggestions for mild conditions, and accurate medical specialist navigation.
+          </p>
+          <p style="color: var(--text-secondary); line-height: 1.7; margin-top: 0.8rem;">
+            <strong>Motivation:</strong> As computer engineering students, our goal is to harness structured software engineering principles, modern responsive design, 3D interactive graphics, and relational database management to demonstrate how web technologies can empower people with calm, objective healthcare navigation.
+          </p>
+        </div>
+
+        <!-- 3. Key Objectives -->
+        <div class="form-card">
+          <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+            <div class="process-icon" style="margin-bottom:0; width:46px; height:46px; font-size:1.2rem;">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--dark-blue);">3. Key Project Objectives</h2>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.9rem; margin-top: 0.5rem;">
+            <li style="display: flex; gap: 0.8rem; align-items: flex-start; color: var(--text-secondary);">
+              <i class="fa-solid fa-circle-check" style="color: var(--primary-green); margin-top: 4px;"></i>
+              <span><strong>Predefined 50-Symptom Dataset:</strong> Maintain a clinically curated relational database of 50 common symptoms across internal medicine, dermatology, ENT, musculoskeletal, and mental wellness.</span>
+            </li>
+            <li style="display: flex; gap: 0.8rem; align-items: flex-start; color: var(--text-secondary);">
+              <i class="fa-solid fa-circle-check" style="color: var(--primary-green); margin-top: 4px;"></i>
+              <span><strong>Prioritized Emergency Red-Flag Triage:</strong> Implement immediate server-side screening for critical emergency markers (such as chest pain or stroke symptoms) that precede routine guidance.</span>
+            </li>
+            <li style="display: flex; gap: 0.8rem; align-items: flex-start; color: var(--text-secondary);">
+              <i class="fa-solid fa-circle-check" style="color: var(--primary-green); margin-top: 4px;"></i>
+              <span><strong>Specialist Navigation Engine:</strong> Formulate rule-based symptom-to-specialist mapping guiding patients toward the appropriate medical specialist category.</span>
+            </li>
+            <li style="display: flex; gap: 0.8rem; align-items: flex-start; color: var(--text-secondary);">
+              <i class="fa-solid fa-circle-check" style="color: var(--primary-green); margin-top: 4px;"></i>
+              <span><strong>Dual Role Authentication & Security:</strong> Provide distinct secure authentication for patients and doctors with credential verification status and patient privacy boundaries.</span>
+            </li>
+            <li style="display: flex; gap: 0.8rem; align-items: flex-start; color: var(--text-secondary);">
+              <i class="fa-solid fa-circle-check" style="color: var(--primary-green); margin-top: 4px;"></i>
+              <span><strong>Integrated AyuBot Health Assistant:</strong> Embed a non-diagnostic conversational FAQ guide assisting visitors with platform navigation and healthcare inquiries.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 4. Proposed Solution & Architecture -->
+        <div class="form-card">
+          <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;">
+            <div class="process-icon" style="margin-bottom:0; width:46px; height:46px; font-size:1.2rem; background: var(--light-green); color: var(--primary-green);">
+              <i class="fa-solid fa-cubes"></i>
+            </div>
+            <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--dark-blue);">4. Proposed Technical Solution</h2>
+          </div>
+          <p style="color: var(--text-secondary); line-height: 1.7;">
+            AyuCare implements a modern 3-tier architecture:
+          </p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 1.25rem;">
+            <div style="background: var(--light-blue); padding: 1.25rem; border-radius: var(--radius-md);">
+              <h4 style="font-family: var(--font-heading); color: var(--primary-blue); margin-bottom: 0.4rem;">Frontend Tier</h4>
+              <p style="font-size: 0.82rem; color: var(--dark-blue);">HTML5, CSS3, ES6 JavaScript modules, Three.js 3D animations, FontAwesome icons, responsive layouts.</p>
+            </div>
+            <div style="background: var(--light-green); padding: 1.25rem; border-radius: var(--radius-md);">
+              <h4 style="font-family: var(--font-heading); color: var(--primary-green); margin-bottom: 0.4rem;">Application Tier</h4>
+              <p style="font-size: 0.82rem; color: var(--dark-blue);">Python 3, Flask REST API, PBKDF2 secure password hashing, HMAC-SHA256 bearer tokens, rule-based triage services.</p>
+            </div>
+            <div style="background: #F3E5F5; padding: 1.25rem; border-radius: var(--radius-md);">
+              <h4 style="font-family: var(--font-heading); color: #7B1FA2; margin-bottom: 0.4rem;">Data Tier</h4>
+              <p style="font-size: 0.82rem; color: var(--dark-blue);">MySQL Relational Database (<code>ayucare_db</code>) with 9 normalized tables, foreign keys, and indexes.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Project Limitations & Ethical Scope -->
+        <div class="disclaimer-banner">
+          <i class="fa-solid fa-triangle-exclamation disclaimer-icon"></i>
+          <div class="disclaimer-content">
+            <h4>5. Project Scope & Crucial Limitations</h4>
+            <p>
+              AyuCare is strictly an educational prototype designed to demonstrate computer science, web architecture, and user interface concepts. 
+            </p>
+            <ul style="margin-top: 0.6rem; padding-left: 1.2rem; font-size: 0.85rem; color: #8C5300; line-height: 1.6;">
+              <li><strong>Not a Diagnostic System:</strong> It does NOT diagnose medical pathologies or illnesses.</li>
+              <li><strong>No Prescriptions:</strong> It does NOT prescribe pharmacological drugs, dosages, or medicinal regimens.</li>
+              <li><strong>Informational Support Only:</strong> Specialist recommendations are navigational suggestions, not formal clinical referrals.</li>
+              <li><strong>Emergency Escalation:</strong> Anyone experiencing severe symptoms must seek emergency hospital care immediately.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+          <h3>आयु<span>Care</span></h3>
+        </div>
+        <p>Health Today, Better Tomorrow. Empowering people with responsible symptom guidance and medical specialist recommendations.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Project</a></li>
+          <li><a href="symptom-checker.html">Check Symptoms</a></li>
+          <li><a href="specialists.html">Find a Specialist</a></li>
+          <li><a href="contact.html">Contact & Feedback</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>User Portals</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Patient Login</a></li>
+          <li><a href="register.html">Patient Registration</a></li>
+          <li><a href="doctor-login.html">Doctor Portal Login</a></li>
+          <li><a href="doctor-register.html">Doctor Registration</a></li>
+          <li><a href="dashboard.html">Patient Dashboard</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Emergency Numbers</h4>
+        <p style="font-size: 0.85rem; color: #ECEFF1; margin-bottom: 0.8rem;">In case of severe or life-threatening medical distress, dial immediately:</p>
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.88rem;">
+          <div><strong style="color: #66BB6A;">National Emergency:</strong> 112</div>
+          <div><strong style="color: #66BB6A;">Medical Helpline:</strong> 108 / 102</div>
+          <div><strong style="color: #66BB6A;">USA / International:</strong> 911</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). All rights reserved. For educational demonstration only.</div>
+      <div>Designed with HTML5, CSS3, Three.js, Flask & MySQL.</div>
+    </div>
+  </footer>
+
+  <!-- Floating AyuBot Chatbot -->
+  <button class="ayubot-launcher" id="ayubot-launcher" aria-label="Open AyuBot Health Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="ayubot-badge">1</span>
+  </button>
+
+  <div class="ayubot-window" id="ayubot-window">
+    <div class="ayubot-header">
+      <div class="ayubot-header-info">
+        <div class="ayubot-avatar-wrap"><i class="fa-solid fa-robot"></i></div>
+        <div class="ayubot-title">
+          <h4>AyuBot</h4>
+          <span>Your Health Guide</span>
+        </div>
+      </div>
+      <div class="ayubot-actions">
+        <button class="ayubot-ctrl-btn" id="ayubot-min-btn"><i class="fa-solid fa-minus"></i></button>
+        <button class="ayubot-ctrl-btn" id="ayubot-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="ayubot-disclaimer">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Informational guide only. Not a medical substitute.</span>
+    </div>
+    <div class="ayubot-body" id="ayubot-messages">
+      <div class="chat-bubble bot">
+        Hello! I am <strong>AyuBot</strong>. Have any questions about how AyuCare works or which specialist to explore?
+      </div>
+      <div class="typing-indicator" id="ayubot-typing">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+    <div class="ayubot-chips" id="ayubot-chips-container"></div>
+    <div class="ayubot-footer">
+      <input type="text" class="ayubot-input" id="ayubot-input" placeholder="Type your health question..." autocomplete="off">
+      <button class="ayubot-send-btn" id="ayubot-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

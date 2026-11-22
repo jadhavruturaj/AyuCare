@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard — आयुCare (AyuCare)</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap"><img src="assets/ayucare-logo.png" alt="AyuCare Logo"></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Patient Dashboard</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Maintained by main.js -->
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Dashboard Workspace Layout -->
+  <div class="dashboard-wrapper">
+    
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      
+      <!-- Patient Profile Summary Card -->
+      <div class="profile-card">
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="status-indicator-dot"></div>
+        </div>
+
+        <h3 class="profile-name" id="patient-display-name">Patient Name</h3>
+        <span class="profile-role-tag"><i class="fa-solid fa-id-badge"></i> Patient Account</span>
+
+        <div class="profile-meta-list">
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span id="patient-email">patient@example.com</span>
+          </div>
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-phone"></i>
+            <span id="patient-mobile">+91 9876543210</span>
+          </div>
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-cake-candles"></i>
+            <span id="patient-age">25 yrs</span>
+          </div>
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-venus-mars"></i>
+            <span id="patient-gender">Male</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Card -->
+      <div class="dashboard-nav-card">
+        <ul class="dash-nav-list">
+          <li>
+            <button class="dash-nav-btn active" data-target="panel-overview">
+              <i class="fa-solid fa-gauge"></i>
+              <span>Dashboard Overview</span>
+            </button>
+          </li>
+          <li>
+            <button class="dash-nav-btn" data-target="panel-symptoms">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>Symptom History</span>
+            </button>
+          </li>
+          <li>
+            <button class="dash-nav-btn" data-target="panel-consultations">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>My Consultations</span>
+            </button>
+          </li>
+          <li>
+            <button class="dash-nav-btn" data-target="panel-settings">
+              <i class="fa-solid fa-gear"></i>
+              <span>Account Settings</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- Main Content Panel Area -->
+    <main class="dashboard-main">
+      
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <div class="welcome-text">
+          <h1>Welcome to AyuCare</h1>
+          <p>Track your health guidance history, review home-care recommendations, and consult verified doctors.</p>
+        </div>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; position:relative; z-index:2;">
+          <a href="symptom-checker.html" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-stethoscope"></i> Check Symptoms
+          </a>
+          <a href="specialists.html" class="btn btn-outline btn-sm" style="color:#FFF; border-color:#FFF;">
+            <i class="fa-solid fa-user-doctor"></i> Explore Specialists
+          </a>
+        </div>
+      </div>
+
+      <!-- Metrics Summary Row -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-total-checks">0</h3>
+            <p>Symptom Checks</p>
+          </div>
+          <div class="metric-icon-box">
+            <i class="fa-solid fa-notes-medical"></i>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-total-consults">0</h3>
+            <p>Consultations Placed</p>
+          </div>
+          <div class="metric-icon-box green">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-pending-consults">0</h3>
+            <p>Pending Doctor Review</p>
+          </div>
+          <div class="metric-icon-box orange">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Overview Panel -->
+      <div class="dash-panel active" id="panel-overview">
+        
+        <!-- Recent Symptom Guidance Table -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-notes-medical"></i>
+              <span>Recent Symptom Guidance Submissions</span>
+            </h3>
+            <a href="symptom-checker.html" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-plus"></i> New Check
+            </a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Symptom</th>
+                  <th>Duration</th>
+                  <th>Severity</th>
+                  <th>Recommended Specialist</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="symptoms-history-tbody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent Consultations Table -->
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>Specialist Consultation Requests</span>
+            </h3>
+            <a href="specialists.html" class="btn btn-secondary btn-sm">
+              <i class="fa-solid fa-plus"></i> Request Consultation
+            </a>
+          </div>
+
+          <div class="table-responsive">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Doctor & Specialty</th>
+                  <th>Preferred Timing</th>
+                  <th>Status</th>
+                  <th>Doctor Clinical Notes</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="consultations-tbody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2. Symptom History Dedicated Panel -->
+      <div class="dash-panel" id="panel-symptoms">
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>Comprehensive Health Guidance Archive</span>
+            </h3>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+            A historical record of all preliminary symptom guidance and specialist suggestions generated on AyuCare.
+          </p>
+          <div class="table-responsive">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Symptom</th>
+                  <th>Duration</th>
+                  <th>Severity</th>
+                  <th>Recommended Specialist</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="symptoms-history-tbody-full">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Consultations Dedicated Panel -->
+      <div class="dash-panel" id="panel-consultations">
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span>My Consultation Status Tracker</span>
+            </h3>
+            <a href="specialists.html" class="btn btn-secondary btn-sm">
+              <i class="fa-solid fa-user-doctor"></i> Book Another Doctor
+            </a>
+          </div>
+          <div class="table-responsive">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Doctor & Specialty</th>
+                  <th>Preferred Timing</th>
+                  <th>Status</th>
+                  <th>Doctor Clinical Notes</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="consultations-tbody-full">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Account Settings Panel -->
+      <div class="dash-panel" id="panel-settings">
+        <div class="panel-card" style="max-width: 640px;">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-user-pen"></i>
+              <span>Update Profile Information</span>
+            </h3>
+          </div>
+
+          <form id="patient-edit-profile-form">
+            <div class="form-group">
+              <label class="form-label" for="edit-name">Full Name *</label>
+              <input type="text" id="edit-name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="edit-mobile">Mobile Number *</label>
+              <input type="tel" id="edit-mobile" class="form-control" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="edit-age">Age (Years) *</label>
+                <input type="number" id="edit-age" class="form-control" min="1" max="120" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="edit-gender">Gender</label>
+                <select id="edit-gender" class="form-control">
+                  <option value="Not Specified">Not Specified</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Non-Binary">Non-Binary / Other</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm" style="margin-top: 0.5rem;">
+              <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). For educational demonstration only.</div>
+      <div>Designed with HTML5, CSS3, Three.js, Flask & MySQL.</div>
+    </div>
+  </footer>
+
+  <!-- Floating AyuBot Chatbot Component -->
+  <button class="ayubot-launcher" id="ayubot-launcher" aria-label="Open AyuBot Health Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="ayubot-badge">1</span>
+  </button>
+
+  <div class="ayubot-window" id="ayubot-window">
+    <div class="ayubot-header">
+      <div class="ayubot-header-info">
+        <div class="ayubot-avatar-wrap"><i class="fa-solid fa-robot"></i></div>
+        <div class="ayubot-title">
+          <h4>AyuBot</h4>
+          <span>Your Health Guide</span>
+        </div>
+      </div>
+      <div class="ayubot-actions">
+        <button class="ayubot-ctrl-btn" id="ayubot-min-btn"><i class="fa-solid fa-minus"></i></button>
+        <button class="ayubot-ctrl-btn" id="ayubot-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="ayubot-disclaimer">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Informational guide only. Not a medical substitute.</span>
+    </div>
+    <div class="ayubot-body" id="ayubot-messages">
+      <div class="chat-bubble bot">
+        Hello! You are viewing your personal patient dashboard. Have any questions about your history or specialist requests?
+      </div>
+      <div class="typing-indicator" id="ayubot-typing">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+    <div class="ayubot-chips" id="ayubot-chips-container"></div>
+    <div class="ayubot-footer">
+      <input type="text" class="ayubot-input" id="ayubot-input" placeholder="Ask AyuBot..." autocomplete="off">
+      <button class="ayubot-send-btn" id="ayubot-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

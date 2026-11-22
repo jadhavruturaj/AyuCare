@@ -13,24 +13,35 @@ from routes.contact_routes import contact_bp
 from routes.profile_routes import profile_bp
 
 def create_app():
-    # Build list of static directories covering local, Docker, and Vercel Lambda contexts
+    import os
     from pathlib import Path
-    base_candidates = [
-        Path(os.getcwd()),
-        Path(PROJECT_DIR),
-        Path(os.path.dirname(os.path.abspath(__file__))).parent,
-        Path(os.path.dirname(os.path.abspath(__file__)))
+    from flask import render_template
+
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    root_dir = os.path.abspath(os.path.join(base_dir, ".."))
+
+    # Template directories candidates
+    template_candidates = [
+        os.path.join(root_dir, "templates"),
+        os.path.join(base_dir, "templates"),
+        os.path.join(os.getcwd(), "templates"),
+        os.path.join(root_dir, "public"),
+        os.path.join(root_dir, "frontend"),
+        root_dir
     ]
-    static_dirs = []
-    for b in base_candidates:
-        for sub in ["public", "frontend", ""]:
-            d = b / sub if sub else b
-            if d.is_dir() and str(d) not in static_dirs:
-                static_dirs.append(str(d))
+    template_dir = next((d for d in template_candidates if os.path.isdir(d) and os.path.exists(os.path.join(d, "index.html"))), template_candidates[0])
 
-    frontend_dir = next((d for d in static_dirs if os.path.exists(os.path.join(d, "index.html"))), static_dirs[0] if static_dirs else str(PROJECT_DIR))
+    # Static directories candidates
+    static_candidates = [
+        os.path.join(root_dir, "static"),
+        os.path.join(root_dir, "public"),
+        os.path.join(root_dir, "frontend"),
+        os.path.join(base_dir, "static"),
+        root_dir
+    ]
+    static_dir = next((d for d in static_candidates if os.path.isdir(d) and (os.path.exists(os.path.join(d, "css")) or os.path.exists(os.path.join(d, "js")))), static_candidates[0])
 
-    app = Flask(__name__, static_folder=frontend_dir, static_url_path="")
+    app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
     app.config.from_object(Config)
 
     # Enable CORS
@@ -64,48 +75,65 @@ def create_app():
             "disclaimer": "AyuCare is an educational guidance prototype, not a medical diagnosis system."
         }), 200
 
-    @app.route("/api/debug-files", methods=["GET"])
-    def debug_files():
-        import glob
-        return jsonify({
-            "cwd": os.getcwd(),
-            "cwd_files": os.listdir(os.getcwd()) if os.path.exists(os.getcwd()) else [],
-            "project_dir": str(PROJECT_DIR),
-            "project_dir_files": os.listdir(str(PROJECT_DIR)) if os.path.exists(str(PROJECT_DIR)) else [],
-            "static_dirs": static_dirs,
-            "all_html": glob.glob("**/*.html", recursive=True),
-            "app_file": os.path.abspath(__file__)
-        }), 200
+    # Explicit static assets routing
+    @app.route("/css/<path:filename>")
+    def serve_css(filename):
+        for candidate in static_candidates:
+            target = os.path.join(candidate, "css")
+            if os.path.isfile(os.path.join(target, filename)):
+                return send_from_directory(target, filename)
+        return jsonify({"error": "CSS not found"}), 404
 
-    # Serve Frontend static pages for single-port and serverless fallback
+    @app.route("/js/<path:filename>")
+    def serve_js(filename):
+        for candidate in static_candidates:
+            target = os.path.join(candidate, "js")
+            if os.path.isfile(os.path.join(target, filename)):
+                return send_from_directory(target, filename)
+        return jsonify({"error": "JS not found"}), 404
+
+    @app.route("/assets/<path:filename>")
+    def serve_assets(filename):
+        for candidate in static_candidates:
+            target = os.path.join(candidate, "assets")
+            if os.path.isfile(os.path.join(target, filename)):
+                return send_from_directory(target, filename)
+        return jsonify({"error": "Asset not found"}), 404
+
+    # HTML page rendering (supports render_template, send_from_directory, and clean URLs)
     @app.route("/", defaults={"path": "index.html"})
     @app.route("/<path:path>")
     def serve_frontend(path):
         if path.startswith("api/"):
             return jsonify({"success": False, "message": "API endpoint not found."}), 404
 
-        # Search across static folders
-        for d in static_dirs:
-            if not os.path.isdir(d):
-                continue
-            # Direct file match
-            candidate = os.path.join(d, path)
-            if os.path.isfile(candidate):
-                return send_from_directory(d, path)
-            # Match with .html extension
-            html_candidate = os.path.join(d, f"{path}.html")
-            if os.path.isfile(html_candidate):
-                return send_from_directory(d, f"{path}.html")
+        clean_path = path.strip("/")
+        if not clean_path or clean_path == "index":
+            clean_path = "index.html"
+
+        # Check template rendering
+        tpl_name = clean_path if clean_path.endswith(".html") else f"{clean_path}.html"
+        for t_dir in template_candidates:
+            if os.path.isfile(os.path.join(t_dir, tpl_name)):
+                try:
+                    return render_template(tpl_name)
+                except Exception:
+                    return send_from_directory(t_dir, tpl_name)
+
+        # Check static file direct match
+        for s_dir in static_candidates:
+            if os.path.isfile(os.path.join(s_dir, clean_path)):
+                return send_from_directory(s_dir, clean_path)
 
         # Fallback to index.html
-        for d in static_dirs:
-            if not os.path.isdir(d):
-                continue
-            idx = os.path.join(d, "index.html")
-            if os.path.isfile(idx):
-                return send_from_directory(d, "index.html")
+        for t_dir in template_candidates:
+            if os.path.isfile(os.path.join(t_dir, "index.html")):
+                try:
+                    return render_template("index.html")
+                except Exception:
+                    return send_from_directory(t_dir, "index.html")
 
-        return "आयुCare Platform - Frontend ready. Visit /api/health for API status.", 200
+        return render_template("index.html")
 
     # Global Error Handlers
     @app.errorhandler(404)
@@ -113,23 +141,21 @@ def create_app():
         if request.path.startswith("/api/"):
             return jsonify({"success": False, "message": "Resource not found"}), 404
         
-        # Check if clean URL corresponds to an existing .html page
         clean_path = request.path.strip("/")
-        if clean_path:
-            for d in static_dirs:
-                if not os.path.isdir(d):
-                    continue
-                html_candidate = os.path.join(d, f"{clean_path}.html")
-                if os.path.isfile(html_candidate):
-                    return send_from_directory(d, f"{clean_path}.html")
+        tpl_name = clean_path if clean_path.endswith(".html") else f"{clean_path}.html"
+        for t_dir in template_candidates:
+            if os.path.isfile(os.path.join(t_dir, tpl_name)):
+                try:
+                    return render_template(tpl_name)
+                except Exception:
+                    return send_from_directory(t_dir, tpl_name)
 
-        # Fallback to index.html
-        for d in static_dirs:
-            if not os.path.isdir(d):
-                continue
-            idx = os.path.join(d, "index.html")
-            if os.path.isfile(idx):
-                return send_from_directory(d, "index.html")
+        for t_dir in template_candidates:
+            if os.path.isfile(os.path.join(t_dir, "index.html")):
+                try:
+                    return render_template("index.html")
+                except Exception:
+                    return send_from_directory(t_dir, "index.html")
         return "Page not found", 404
 
     @app.errorhandler(500)

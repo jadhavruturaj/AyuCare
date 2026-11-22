@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>आयुCare (AyuCare) — Smart Symptom Guidance & Specialist Recommendation</title>
+  <meta name="description" content="AyuCare is a modern healthcare guidance platform offering preliminary symptom guidance, mild home-care advice, and specialist recommendations.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap">
+      <img src="assets/ayucare-logo.png" alt="AyuCare Official Logo">
+    </div>
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+    <p style="margin-top: 14px; font-size: 0.82rem; font-weight: 600; color: var(--dark-blue); font-family: var(--font-heading);">
+      आयुCare • Health Today, Better Tomorrow
+    </p>
+  </div>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Health Today, Better Tomorrow</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+        <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="specialists.html" class="nav-link">Find a Specialist</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+
+      <!-- Nav Actions (Dynamic Login / Register / Profile) -->
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+      </div>
+
+      <!-- Hamburger toggle for mobile -->
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section with 3D Canvas -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-sparkles"></i>
+          <span>Smart Symptom Guidance & Specialist Recommendation</span>
+        </div>
+        
+        <h1 class="hero-title">
+          Your Health Journey <br>
+          <span class="highlight-blue">Starts</span> <span class="highlight-green">Here.</span>
+        </h1>
+
+        <p class="hero-description">
+          AyuCare provides intelligent, evidence-based preliminary symptom guidance, clinically safe mild home-care advice, and accurate medical specialist navigation to help you make informed healthcare decisions.
+        </p>
+
+        <div class="hero-actions">
+          <a href="symptom-checker.html" class="btn btn-primary btn-lg">
+            <i class="fa-solid fa-stethoscope"></i>
+            <span>Check Your Symptoms</span>
+          </a>
+          <a href="specialists.html" class="btn btn-outline btn-lg">
+            <i class="fa-solid fa-user-doctor"></i>
+            <span>Explore Specialists</span>
+          </a>
+        </div>
+
+        <div class="hero-highlights">
+          <div class="highlight-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>50+ Clinical Symptoms</span>
+          </div>
+          <div class="highlight-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>11 Specialist Fields</span>
+          </div>
+          <div class="highlight-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>24/7 AyuBot Assistant</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3D WebGL Healthcare Canvas -->
+      <div class="hero-3d-wrapper" id="three-hero-container">
+        <canvas id="three-hero-canvas"></canvas>
+
+        <!-- Fallback if WebGL fails or is disabled -->
+        <div class="hero-3d-fallback">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Healthcare" style="width: 140px; margin-bottom: 1rem;">
+          <h3 style="font-family: var(--font-heading); color: var(--dark-blue);">Reliable Care Guidance</h3>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); max-width: 300px;">Navigating you to the right specialist with precision.</p>
+        </div>
+
+        <!-- Floating UI Widget -->
+        <div class="hero-floating-card">
+          <div class="card-icon">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <div class="card-text">
+            <h4>Preliminary Triage Active</h4>
+            <p>Evidence-based specialist routing</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Counters Section -->
+  <section class="stats-section">
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-file-medical"></i>
+        </div>
+        <div class="stat-info">
+          <div class="stat-number" data-target="50" data-suffix="+">0</div>
+          <div class="stat-label">Predefined Symptoms</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-user-doctor"></i>
+        </div>
+        <div class="stat-info">
+          <div class="stat-number" data-target="11" data-suffix=" Fields">0</div>
+          <div class="stat-label">Medical Specialists</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+        <div class="stat-info">
+          <div class="stat-number" data-target="100" data-suffix="%">0</div>
+          <div class="stat-label">Privacy & Security</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="stat-info">
+          <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+          <div class="stat-label">AyuBot Guidance</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Streamlined Healthcare Guidance</span>
+        <h2 class="section-title">How AyuCare Works</h2>
+        <p class="section-desc">Experience a simple 4-step process designed to help you understand your symptoms, take appropriate care, and consult the right specialist.</p>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-card">
+          <span class="process-step-num">01</span>
+          <div class="process-icon">
+            <i class="fa-solid fa-hand-holding-medical"></i>
+          </div>
+          <h3 class="process-title">Report Symptoms</h3>
+          <p class="process-text">Select your primary symptom, specify duration, severity (Mild, Moderate, Severe), and share how you feel.</p>
+        </div>
+
+        <div class="process-card">
+          <span class="process-step-num">02</span>
+          <div class="process-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <h3 class="process-title">Emergency Check</h3>
+          <p class="process-text">Our backend immediately assesses critical red-flag indicators (such as chest pain or breathing difficulty) for urgent escalation.</p>
+        </div>
+
+        <div class="process-card">
+          <span class="process-step-num">03</span>
+          <div class="process-icon">
+            <i class="fa-solid fa-notes-medical"></i>
+          </div>
+          <h3 class="process-title">Clinical Guidance</h3>
+          <p class="process-text">Receive structured preliminary care instructions and clinically appropriate home-care recommendations for mild symptoms.</p>
+        </div>
+
+        <div class="process-card">
+          <span class="process-step-num">04</span>
+          <div class="process-icon">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <h3 class="process-title">Find a Specialist</h3>
+          <p class="process-text">Connect with the exact medical specialist recommended for your condition and book an appointment with verified doctors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Features Section -->
+  <section class="section" id="features" style="background: rgba(255,255,255,0.65);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-subtitle">Platform Capabilities</span>
+        <h2 class="section-title">Designed for Patient Confidence</h2>
+        <p class="section-desc">AyuCare bridges the gap between confusing online search results and verified professional healthcare consultation.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <h3 class="feature-title">Smart Symptom Checker</h3>
+          <p class="feature-desc">Interactive clinical form covering 50 common symptoms across respiratory, dermatological, digestive, and musculoskeletal health.</p>
+        </div>
+
+        <div class="feature-card green-accent">
+          <div class="feature-icon-box">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <h3 class="feature-title">Responsible Home Care</h3>
+          <p class="feature-desc">Provides non-pharmacological, evidence-based supportive tips only when clinically safe. Never replaces professional clinical evaluation.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i class="fa-solid fa-hospital-user"></i>
+          </div>
+          <h3 class="feature-title">Specialist Recommendations</h3>
+          <p class="feature-desc">Intelligent rule-based mapping directs you straight to the right medical domain—from Cardiologists to Dermatologists and ENTs.</p>
+        </div>
+
+        <div class="feature-card green-accent">
+          <div class="feature-icon-box">
+            <i class="fa-solid fa-shield-virus"></i>
+          </div>
+          <h3 class="feature-title">Emergency Red-Flag Triage</h3>
+          <p class="feature-desc">Automated detection of life-threatening warning signs ensures urgent emergency symptoms are immediately escalated to 112/911.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <h3 class="feature-title">AyuBot Health Guide</h3>
+          <p class="feature-desc">Floating AI-style conversational guide answering queries about website navigation, medical specialists, and platform features 24/7.</p>
+        </div>
+
+        <div class="feature-card green-accent">
+          <div class="feature-icon-box">
+            <i class="fa-solid fa-id-card-clip"></i>
+          </div>
+          <h3 class="feature-title">Verified Doctor Directory</h3>
+          <p class="feature-desc">Independent doctor registration and credential verification ensures consultation requests reach qualified medical professionals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety & Disclaimer Section -->
+  <section class="section">
+    <div class="container">
+      <div class="disclaimer-banner">
+        <i class="fa-solid fa-shield-halved disclaimer-icon"></i>
+        <div class="disclaimer-content">
+          <h4>Important Healthcare & Educational Notice</h4>
+          <p>
+            आयुCare (AyuCare) is an educational project prototype created to offer preliminary symptom guidance and specialist recommendation. 
+            <strong>AyuCare is NOT a medical diagnosis system and does NOT prescribe medication or specific drug dosages.</strong>
+            If you are experiencing severe, worsening, or life-threatening symptoms (such as acute chest pain, difficulty breathing, sudden slurred speech, or heavy bleeding), please contact emergency medical services (112 / 108 / 911) or visit the nearest hospital emergency room immediately.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo-row">
+          <img src="assets/ayucare-logo.png" alt="AyuCare Logo">
+          <h3>आयु<span>Care</span></h3>
+        </div>
+        <p>
+          Health Today, Better Tomorrow. Empowering people with responsible symptom guidance and medical specialist recommendations.
+        </p>
+        <p style="font-size: 0.78rem; color: #78909C;">
+          An educational computer engineering full-stack healthcare prototype.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Navigation</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Project</a></li>
+          <li><a href="symptom-checker.html">Check Symptoms</a></li>
+          <li><a href="specialists.html">Find a Specialist</a></li>
+          <li><a href="contact.html">Contact & Feedback</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>User Portals</h4>
+        <ul class="footer-links">
+          <li><a href="login.html">Patient Login</a></li>
+          <li><a href="register.html">Patient Registration</a></li>
+          <li><a href="doctor-login.html">Doctor Portal Login</a></li>
+          <li><a href="doctor-register.html">Doctor Registration</a></li>
+          <li><a href="dashboard.html">Patient Dashboard</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Emergency Numbers</h4>
+        <p style="font-size: 0.85rem; color: #ECEFF1; margin-bottom: 0.8rem;">
+          In case of severe or life-threatening medical distress, dial immediately:
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.88rem;">
+          <div><strong style="color: #66BB6A;">National Emergency:</strong> 112</div>
+          <div><strong style="color: #66BB6A;">Medical Helpline:</strong> 108 / 102</div>
+          <div><strong style="color: #66BB6A;">USA / International:</strong> 911</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). All rights reserved. For educational demonstration only.</div>
+      <div>Designed with HTML5, CSS3, Three.js, Flask & MySQL.</div>
+    </div>
+  </footer>
+
+  <!-- Floating AyuBot Chatbot Component -->
+  <button class="ayubot-launcher" id="ayubot-launcher" aria-label="Open AyuBot Health Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="ayubot-badge">1</span>
+  </button>
+
+  <div class="ayubot-window" id="ayubot-window">
+    <div class="ayubot-header">
+      <div class="ayubot-header-info">
+        <div class="ayubot-avatar-wrap">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="ayubot-title">
+          <h4>AyuBot</h4>
+          <span>Your Health Guide</span>
+        </div>
+      </div>
+      <div class="ayubot-actions">
+        <button class="ayubot-ctrl-btn" id="ayubot-min-btn" aria-label="Minimize Chat"><i class="fa-solid fa-minus"></i></button>
+        <button class="ayubot-ctrl-btn" id="ayubot-close-btn" aria-label="Close Chat"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+
+    <div class="ayubot-disclaimer">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Informational guide only. Not a medical substitute.</span>
+    </div>
+
+    <div class="ayubot-body" id="ayubot-messages">
+      <div class="chat-bubble bot">
+        Hello! I am <strong>AyuBot</strong>, your AyuCare health guide. How can I assist you with your health questions or navigating the platform today?
+      </div>
+      <div class="typing-indicator" id="ayubot-typing">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+
+    <!-- Suggested Quick Question Chips -->
+    <div class="ayubot-chips" id="ayubot-chips-container"></div>
+
+    <div class="ayubot-footer">
+      <input type="text" class="ayubot-input" id="ayubot-input" placeholder="Type your health question..." autocomplete="off">
+      <button class="ayubot-send-btn" id="ayubot-send-btn" aria-label="Send Message">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/three-hero.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

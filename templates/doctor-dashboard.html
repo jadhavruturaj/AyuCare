@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Portal Dashboard — आयुCare (AyuCare)</title>
+  <link rel="icon" type="image/png" href="assets/ayucare-logo.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+  <!-- Loading Animation -->
+  <div class="page-loader">
+    <div class="loader-logo-wrap"><img src="assets/ayucare-logo.png" alt="AyuCare Logo"></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <img src="assets/ayucare-logo.png" alt="AyuCare Logo" class="brand-logo-img">
+        <div class="brand-text">
+          <span class="brand-name">आयु<span>Care</span></span>
+          <span class="brand-tagline">Doctor Clinical Portal</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="specialists.html" class="nav-link">Doctor Directory</a></li>
+        <li><a href="symptom-checker.html" class="nav-link">Symptom Checker</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Maintained by main.js -->
+      </div>
+
+      <button class="menu-toggle" aria-label="Toggle navigation menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Doctor Dashboard Layout -->
+  <div class="dashboard-wrapper">
+    
+    <!-- Doctor Sidebar -->
+    <aside class="dashboard-sidebar">
+      
+      <!-- Doctor Profile Summary Card -->
+      <div class="profile-card">
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar doctor-avatar">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <div class="status-indicator-dot"></div>
+        </div>
+
+        <h3 class="profile-name" id="doctor-display-name">Dr. Rajesh Sharma</h3>
+        <div style="font-size:0.85rem; font-weight:600; color:var(--primary-blue);" id="doctor-specialization">General Physician</div>
+        
+        <div style="margin: 0.6rem 0;">
+          <span class="verification-badge pending" id="doctor-status-badge">
+            <i class="fa-solid fa-clock"></i> PENDING
+          </span>
+        </div>
+
+        <div class="profile-meta-list">
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-id-card"></i>
+            <span id="doctor-registration-no">MCI-34821</span>
+          </div>
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-hospital"></i>
+            <span id="doctor-clinic">Apollo Health Clinic</span>
+          </div>
+          <div class="profile-meta-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Privacy Controlled</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Card -->
+      <div class="dashboard-nav-card">
+        <ul class="dash-nav-list">
+          <li>
+            <button class="dash-nav-btn active" data-target="panel-doc-requests">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>Patient Consultations</span>
+            </button>
+          </li>
+          <li>
+            <button class="dash-nav-btn" data-target="panel-doc-profile">
+              <i class="fa-solid fa-user-gear"></i>
+              <span>Manage Doctor Profile</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- Main Content Panel Area -->
+    <main class="dashboard-main">
+      
+      <!-- Welcome Banner -->
+      <div class="welcome-banner" style="background: linear-gradient(135deg, var(--dark-blue) 0%, #1B5E20 100%);">
+        <div class="welcome-text">
+          <h1>Doctor Practice Dashboard</h1>
+          <p>Review authorized patient consultation requests, schedule appointments, and provide preliminary clinical guidance.</p>
+        </div>
+        <div>
+          <span class="badge" style="background: rgba(255,255,255,0.15); padding: 0.5rem 1rem; border-radius: var(--radius-full); font-size: 0.82rem;">
+            <i class="fa-solid fa-lock"></i> Patient Privacy Protected
+          </span>
+        </div>
+      </div>
+
+      <!-- Metrics Row -->
+      <div class="metrics-grid" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-doctor-total">0</h3>
+            <p>Total Requests</p>
+          </div>
+          <div class="metric-icon-box">
+            <i class="fa-solid fa-inbox"></i>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-doctor-pending">0</h3>
+            <p>Pending Actions</p>
+          </div>
+          <div class="metric-icon-box orange">
+            <i class="fa-solid fa-clock"></i>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-doctor-accepted">0</h3>
+            <p>Accepted</p>
+          </div>
+          <div class="metric-icon-box green">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-data">
+            <h3 id="stat-doctor-completed">0</h3>
+            <p>Completed</p>
+          </div>
+          <div class="metric-icon-box">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1. Consultation Requests Panel -->
+      <div class="dash-panel active" id="panel-doc-requests">
+        
+        <div class="panel-card">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-inbox"></i>
+              <span>Incoming Consultation Requests</span>
+            </h3>
+            <span style="font-size:0.8rem; color:var(--text-secondary);">
+              Showing only patients who submitted requests to your practice
+            </span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="dash-table">
+              <thead>
+                <tr>
+                  <th>Patient Info</th>
+                  <th>Symptom Summary & Notes</th>
+                  <th>Preferred Timing</th>
+                  <th>Status</th>
+                  <th>Doctor Clinical Notes</th>
+                  <th>Manage</th>
+                </tr>
+              </thead>
+              <tbody id="doctor-requests-tbody">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2. Profile Management Panel -->
+      <div class="dash-panel" id="panel-doc-profile">
+        
+        <div class="panel-card" style="max-width: 680px;">
+          <div class="panel-card-header">
+            <h3 class="panel-title">
+              <i class="fa-solid fa-user-doctor"></i>
+              <span>Professional Credentials & Clinic Details</span>
+            </h3>
+          </div>
+
+          <form id="doctor-edit-profile-form">
+            <div class="form-group">
+              <label class="form-label" for="doc-edit-name">Full Name *</label>
+              <input type="text" id="doc-edit-name" class="form-control" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="doc-edit-mobile">Contact Mobile *</label>
+                <input type="tel" id="doc-edit-mobile" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="doc-edit-exp">Years of Experience</label>
+                <input type="number" id="doc-edit-exp" class="form-control" min="0" max="60">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="doc-edit-clinic">Hospital or Practice Clinic</label>
+              <input type="text" id="doc-edit-clinic" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="doc-edit-bio">Clinical Bio / Summary</label>
+              <textarea id="doc-edit-bio" class="form-control" style="min-height: 90px;"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-secondary btn-sm" style="margin-top: 0.5rem;">
+              <i class="fa-solid fa-floppy-disk"></i> Update Doctor Profile
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Status Update Modal -->
+  <div class="modal-overlay" id="status-update-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Manage Patient Consultation</h3>
+        <button class="modal-close-btn" id="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-content">
+        <form id="status-update-form">
+          <div class="form-group">
+            <label class="form-label" for="update-status-select">Update Consultation Status *</label>
+            <select id="update-status-select" class="form-control" required>
+              <option value="Pending">Pending Review</option>
+              <option value="Accepted">Accepted & Scheduled</option>
+              <option value="Completed">Completed</option>
+              <option value="Rejected">Unable to Accommodate (Rejected)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="update-notes-input">Clinical Notes / Appointment Instructions</label>
+            <textarea id="update-notes-input" class="form-control" placeholder="Add specific guidance, consultation link, appointment time confirmation, or instructions for the patient..." style="min-height: 100px;"></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.25rem;">
+            <button type="button" class="btn btn-outline btn-sm" id="modal-cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-check"></i> Save Status & Notes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <div>&copy; 2026 आयुCare (AyuCare). For educational demonstration only.</div>
+      <div>Designed with HTML5, CSS3, Three.js, Flask & MySQL.</div>
+    </div>
+  </footer>
+
+  <!-- Floating AyuBot Chatbot Component -->
+  <button class="ayubot-launcher" id="ayubot-launcher" aria-label="Open AyuBot Health Assistant">
+    <i class="fa-solid fa-comment-medical"></i>
+    <span class="ayubot-badge">1</span>
+  </button>
+
+  <div class="ayubot-window" id="ayubot-window">
+    <div class="ayubot-header">
+      <div class="ayubot-header-info">
+        <div class="ayubot-avatar-wrap"><i class="fa-solid fa-robot"></i></div>
+        <div class="ayubot-title">
+          <h4>AyuBot</h4>
+          <span>Your Health Guide</span>
+        </div>
+      </div>
+      <div class="ayubot-actions">
+        <button class="ayubot-ctrl-btn" id="ayubot-min-btn"><i class="fa-solid fa-minus"></i></button>
+        <button class="ayubot-ctrl-btn" id="ayubot-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="ayubot-disclaimer">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Informational guide only. Not a medical substitute.</span>
+    </div>
+    <div class="ayubot-body" id="ayubot-messages">
+      <div class="chat-bubble bot">
+        Hello Doctor! Need any assistance with navigating the portal or understanding consultation states?
+      </div>
+      <div class="typing-indicator" id="ayubot-typing">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+    <div class="ayubot-chips" id="ayubot-chips-container"></div>
+    <div class="ayubot-footer">
+      <input type="text" class="ayubot-input" id="ayubot-input" placeholder="Ask AyuBot..." autocomplete="off">
+      <button class="ayubot-send-btn" id="ayubot-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/doctor-dashboard.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>
